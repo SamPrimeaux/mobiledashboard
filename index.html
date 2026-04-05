@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Agent Platform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        app: '#0e0e0e',
+                        surface: '#181818',
+                        surfaceHover: '#242424',
+                        border: '#2a2a2a',
+                        primary: '#3b82f6',
+                        textMain: '#ececec',
+                        textMuted: '#8b8b8b',
+                        diffAddBg: '#10331b',
+                        diffAddText: '#4ade80',
+                        diffSubBg: '#3f1115',
+                        diffSubText: '#f87171',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'Menlo', 'Monaco', 'Courier New', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Mobile optimization & scrollbar hiding */
+        body {
+            -webkit-tap-highlight-color: transparent;
+            background-color: #0e0e0e;
+            color: #ececec;
+            overflow-x: hidden;
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        
+        /* Drawer animation */
+        .drawer {
+            transform: translateY(100%);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .drawer.open {
+            transform: translateY(0);
+        }
+        
+        /* Overlay animation */
+        .overlay {
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        .overlay.open {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* Screen transition */
+        .screen {
+            display: none;
+            animation: fadeIn 0.2s ease-out forwards;
+        }
+        .screen.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* File Diff Expander */
+        .file-content {
+            display: none;
+        }
+        .file-content.expanded {
+            display: block;
+        }
+        .file-header.expanded .caret-icon {
+            transform: rotate(90deg);
+        }
+
+        /* Automation Expander */
+        .auto-caret {
+            transition: transform 0.2s ease;
+        }
+        .auto-caret.expanded {
+            transform: rotate(180deg);
+        }
+    </style>
+</head>
+<body class="h-screen w-screen overflow-hidden flex flex-col font-sans text-sm">
+
+    <!-- ================= MAIN DASHBOARD SCREEN ================= -->
+    <div id="screen-main" class="screen active flex-col h-full w-full">
+        <!-- Header -->
+        <header class="grid grid-cols-3 items-center px-4 py-3 border-b border-border bg-app shrink-0 relative z-10">
+            <div class="flex items-center">
+                <img src="https://imagedelivery.net/g7wf09fCONpnidkRnR_5vw/ac515729-af6b-4ea5-8b10-e581a4d02100/thumbnail" alt="Logo" class="w-6 h-6 rounded object-cover">
+            </div>
+            <div class="flex items-center justify-center gap-4 overflow-x-auto no-scrollbar whitespace-nowrap justify-self-center">
+                <button id="nav-agents" onclick="switchMainTab('agents')" class="text-textMain font-medium transition-colors">Agents</button>
+                <button id="nav-automations" onclick="switchMainTab('automations')" class="text-textMuted hover:text-textMain transition-colors">Automations</button>
+                <button id="nav-dashboard" onclick="switchMainTab('dashboard')" class="text-textMuted hover:text-textMain transition-colors">Dashboard</button>
+            </div>
+            <div class="flex items-center justify-end">
+                <div class="w-7 h-7 rounded-full bg-surfaceHover flex items-center justify-center text-xs border border-border">
+                    sp
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Scrollable Content -->
+        <main class="flex-1 overflow-y-auto no-scrollbar p-4 flex flex-col gap-6">
+            
+            <!-- Composer Area -->
+            <div class="flex flex-col gap-3">
+                <div class="bg-surface border border-border rounded-xl p-3 flex flex-col gap-3">
+                    <textarea 
+                        class="bg-transparent text-textMain placeholder-textMuted resize-none outline-none w-full h-12" 
+                        placeholder="Ask the Agent to build, fix bugs, explore..."
+                    ></textarea>
+                    
+                    <div class="flex items-center justify-between text-textMuted mt-1">
+                        <div class="flex items-center gap-2">
+                            <button class="flex items-center gap-1 text-xs hover:text-textMain transition-colors bg-surfaceHover px-2 py-1 rounded-md">
+                                Composer 2 <i class="ph ph-caret-down"></i>
+                            </button>
+                            <button class="flex items-center gap-1 text-xs hover:text-textMain transition-colors bg-surfaceHover px-2 py-1 rounded-md">
+                                <i class="ph ph-brain text-blue-400"></i> <i class="ph ph-caret-down"></i>
+                            </button>
+                            <button class="flex items-center gap-1 text-xs text-orange-400 border border-orange-900/50 bg-orange-900/10 px-2 py-1 rounded-md">
+                                <i class="ph ph-funnel"></i> No test
+                            </button>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <button class="hover:text-textMain transition-colors"><i class="ph ph-image text-lg"></i></button>
+                            <button class="bg-textMain text-app rounded-full p-1 hover:opacity-80 transition-opacity"><i class="ph-fill ph-microphone text-sm"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Repo Selector -->
+                <button onclick="toggleRepoDrawer()" class="flex items-center gap-1 text-textMuted text-xs hover:text-textMain self-start">
+                    SamPrimeaux/inneranimalmedia-a... <i class="ph ph-caret-down"></i> main <i class="ph ph-caret-down"></i>
+                </button>
+            </div>
+
+            <div class="h-px bg-border w-full"></div>
+
+            <!-- History List -->
+            <div class="flex flex-col gap-4 pb-8">
+                <div class="flex items-center text-textMuted">
+                    <i class="ph ph-magnifying-glass text-lg"></i>
+                </div>
+
+                <!-- Section: Today -->
+                <div class="flex flex-col gap-2">
+                    <h3 class="text-xs text-textMuted font-medium mb-1">Today</h3>
+                    <div class="flex items-center gap-3 p-2 -mx-2 rounded-lg hover:bg-surface transition-colors cursor-pointer" onclick="openChat()">
+                        <i class="ph ph-check-circle text-textMuted self-start mt-0.5"></i>
+                        <div class="flex-1 flex flex-col">
+                            <div class="flex justify-between items-center">
+                                <span class="text-textMain">Most efficient model</span>
+                                <span class="text-textMuted text-xs">2h</span>
+                            </div>
+                            <div class="flex items-center gap-2 text-textMuted text-xs mt-0.5">
+                                <span class="truncate max-w-[200px]">inneranimalmedia-agentsam-dashboa...</span>
+                                <span>Composer...</span>
+                            </div>
+                        </div>
+                        <i class="ph ph-caret-right text-textMuted/40 text-lg"></i>
+                    </div>
+                </div>
+
+                <!-- Section: This Month -->
+                <div class="flex flex-col gap-2">
+                    <h3 class="text-xs text-textMuted font-medium mb-1 mt-2">This Month</h3>
+                    
+                    <div class="flex items-center gap-3 p-2 -mx-2 rounded-lg hover:bg-surface transition-colors cursor-pointer" onclick="openChat()">
+                        <i class="ph ph-check-circle text-textMuted self-start mt-0.5"></i>
+                        <div class="flex-1 flex flex-col">
+                            <div class="flex justify-between items-center">
+                                <span class="text-textMain">Hello message</span>
+                                <span class="text-textMuted text-xs">1w</span>
+                            </div>
+                            <div class="flex items-center gap-2 text-textMuted text-xs mt-0.5">
+                                <span>dashboard</span>
+                                <span>Opus 4.6 High</span>
+                            </div>
+                        </div>
+                        <i class="ph ph-caret-right text-textMuted/40 text-lg"></i>
+                    </div>
+
+                    <!-- Highlighted past chat based on screenshot -->
+                    <div class="flex items-center gap-3 p-2 -mx-2 rounded-lg bg-surface border border-border cursor-pointer" onclick="openChat()">
+                        <i class="ph ph-git-branch text-purple-400 self-start mt-0.5"></i>
+                        <div class="flex-1 flex flex-col">
+                            <div class="flex justify-between items-center">
+                                <span class="text-textMain">Platform UI stability</span>
+                                <span class="text-textMuted text-xs">1w</span>
+                            </div>
+                            <div class="flex items-center gap-2 text-xs mt-0.5">
+                                <span class="text-green-400">+1892</span>
+                                <span class="text-red-400">-82</span>
+                                <span class="text-textMuted truncate max-w-[180px]">inneranimalmedia-agentsam-dashboard</span>
+                            </div>
+                        </div>
+                        <i class="ph ph-caret-right text-textMuted/40 text-lg"></i>
+                    </div>
+
+                    <div class="flex items-center gap-3 p-2 -mx-2 rounded-lg hover:bg-surface transition-colors cursor-pointer" onclick="openChat()">
+                        <i class="ph ph-git-branch text-purple-400 self-start mt-0.5"></i>
+                        <div class="flex-1 flex flex-col">
+                            <div class="flex justify-between items-center">
+                                <span class="text-textMain">Build information summary</span>
+                                <span class="text-textMuted text-xs">3w</span>
+                            </div>
+                            <div class="flex items-center gap-2 text-textMuted text-xs mt-0.5">
+                                <span>iam-pty</span>
+                                <span>Sonnet 4.6 High</span>
+                            </div>
+                        </div>
+                        <i class="ph ph-caret-right text-textMuted/40 text-lg"></i>
+                    </div>
+                </div>
+
+                <!-- Section: Older -->
+                <div class="flex flex-col gap-2">
+                    <h3 class="text-xs text-textMuted font-medium mb-1 mt-2">Older</h3>
+                    
+                    <div class="flex items-center gap-3 p-2 -mx-2 rounded-lg hover:bg-surface transition-colors cursor-pointer" onclick="openChat()">
+                        <i class="ph ph-git-branch text-purple-400 self-start mt-0.5"></i>
+                        <div class="flex-1 flex flex-col">
+                            <div class="flex justify-between items-center">
+                                <span class="text-textMain">Footer login link consistency</span>
+                                <span class="text-textMuted text-xs">1mo</span>
+                            </div>
+                            <div class="flex items-center gap-2 text-xs mt-0.5">
+                                <span class="text-green-400">+4173</span>
+                                <span class="text-red-400">-724</span>
+                                <span class="text-textMuted truncate max-w-[180px]">dashboard</span>
+                            </div>
+                        </div>
+                        <i class="ph ph-caret-right text-textMuted/40 text-lg"></i>
+                    </div>
+
+                    <div class="flex items-center gap-3 p-2 -mx-2 rounded-lg hover:bg-surface transition-colors cursor-pointer" onclick="openChat()">
+                        <i class="ph ph-git-branch text-purple-400 self-start mt-0.5"></i>
+                        <div class="flex-1 flex flex-col">
+                            <div class="flex justify-between items-center">
+                                <span class="text-textMain">Durable object class missing</span>
+                                <span class="text-textMuted text-xs">1mo</span>
+                            </div>
+                            <div class="flex items-center gap-2 text-xs mt-0.5">
+                                <span class="text-green-400">+4168</span>
+                                <span class="text-red-400">-3675</span>
+                                <span class="text-textMuted truncate max-w-[180px]">dashboard</span>
+                            </div>
+                        </div>
+                        <i class="ph ph-caret-right text-textMuted/40 text-lg"></i>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- ================= AUTOMATIONS SCREEN ================= -->
+    <div id="screen-automations" class="screen flex-col h-full w-full bg-app">
+        <main class="flex-1 overflow-y-auto no-scrollbar p-4 flex flex-col gap-6 pb-12">
+            <h1 class="text-xl text-textMain font-medium">Automations</h1>
+            
+            <!-- Stats -->
+            <div class="flex flex-col gap-2">
+                <div class="bg-surface border border-border rounded-xl p-4 flex flex-col gap-1">
+                    <span class="text-xs text-textMuted">Total</span>
+                    <span class="text-lg text-textMain">0</span>
+                </div>
+                <div class="bg-surface border border-border rounded-xl p-4 flex flex-col gap-1">
+                    <span class="text-xs text-textMuted">Successful · 7d</span>
+                    <span class="text-lg text-textMain">0</span>
+                </div>
+                <div class="bg-surface border border-border rounded-xl p-4 flex flex-col gap-1">
+                    <span class="text-xs text-textMuted">Failed · 7d</span>
+                    <span class="text-lg text-textMain">0</span>
+                </div>
+                <div class="bg-surface border border-border rounded-xl p-4 flex items-center justify-between cursor-pointer hover:bg-surfaceHover transition-colors">
+                    <span class="text-sm text-textMuted">Run History</span>
+                    <i class="ph ph-arrow-right text-textMuted"></i>
+                </div>
+            </div>
+
+            <div class="h-px bg-border w-full my-2"></div>
+
+            <!-- Input area -->
+            <div class="bg-surface border border-border rounded-xl p-3 flex flex-col gap-2">
+                <textarea class="bg-transparent text-textMuted resize-none outline-none w-full h-16 text-sm" placeholder="Review every new pull request for security issues, then post a concise risk summary as a PR comment"></textarea>
+                <div class="flex justify-end">
+                    <button class="bg-surfaceHover text-textMuted rounded-full p-1.5 border border-border hover:text-textMain transition-colors"><i class="ph ph-arrow-up text-sm"></i></button>
+                </div>
+            </div>
+
+            <!-- Tabs & List -->
+            <div class="flex flex-col gap-4 mt-2">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-4 text-sm">
+                        <button class="bg-surfaceHover text-textMain px-3 py-1 rounded-md border border-border">Mine</button>
+                        <button class="text-textMuted hover:text-textMain transition-colors">All</button>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <i class="ph ph-magnifying-glass text-textMuted text-lg cursor-pointer hover:text-textMain transition-colors"></i>
+                        <button class="bg-surfaceHover text-textMain px-3 py-1.5 rounded-md border border-border text-xs flex items-center gap-1 hover:bg-surface transition-colors"><i class="ph ph-plus"></i> New</button>
+                    </div>
+                </div>
+                
+                <div class="text-center text-textMuted text-sm py-6 border-b border-border">
+                    No Automations Yet
+                </div>
+            </div>
+
+            <!-- Suggested -->
+            <div class="flex flex-col gap-3 mt-2">
+                <h3 class="text-sm text-textMuted">Suggested Templates</h3>
+                
+                <!-- Automation 1: Vulnerabilities -->
+                <div class="bg-surface border border-border rounded-xl flex flex-col overflow-hidden transition-colors">
+                    <div class="p-4 flex items-start gap-3 cursor-pointer hover:bg-surfaceHover transition-colors" onclick="toggleAutomation('auto-1', this)">
+                        <div class="w-6 h-6 rounded bg-app border border-border flex items-center justify-center text-textMuted shrink-0 mt-0.5">
+                            <i class="ph ph-shield-check"></i>
+                        </div>
+                        <div class="flex-1 flex flex-col gap-1">
+                            <div class="flex justify-between items-center">
+                                <h4 class="text-textMain text-sm font-medium">Find vulnerabilities</h4>
+                                <i class="ph ph-caret-down text-textMuted transition-transform auto-caret"></i>
+                            </div>
+                            <p class="text-textMuted text-xs leading-relaxed">Review pull requests for exploitable security issues and flag only validated findings before merge</p>
+                        </div>
+                    </div>
+                    <!-- Expanded Config -->
+                    <div id="auto-1" class="hidden bg-app border-t border-border p-4 flex-col gap-4">
+                        <div class="flex flex-col gap-1.5">
+                            <label class="text-xs text-textMuted">Target Repositories</label>
+                            <select class="bg-surface border border-border rounded-lg p-2 text-sm text-textMain outline-none w-full appearance-none">
+                                <option>All Repositories</option>
+                                <option>inneranimalmedia-agentsam-dashboard</option>
+                            </select>
+                        </div>
+                        <div class="flex flex-col gap-1.5">
+                            <label class="text-xs text-textMuted">Action on Discovery</label>
+                            <select class="bg-surface border border-border rounded-lg p-2 text-sm text-textMain outline-none w-full appearance-none">
+                                <option>Comment on PR & Notify</option>
+                                <option>Request Changes (Block Merge)</option>
+                                <option>Log silently</option>
+                            </select>
+                        </div>
+                        <div class="flex items-center gap-2 mt-1">
+                            <input type="checkbox" id="auto-1-strict" class="accent-primary rounded bg-surface border-border">
+                            <label for="auto-1-strict" class="text-xs text-textMuted">Only flag high/critical severity</label>
+                        </div>
+                        <button class="bg-surfaceHover border border-border text-textMain py-2 rounded-lg text-sm font-medium mt-1 hover:bg-surface transition-colors flex items-center justify-center gap-2">
+                            <i class="ph ph-plus"></i> Create Automation
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Automation 2: Assign PR reviewers -->
+                <div class="bg-surface border border-border rounded-xl flex flex-col overflow-hidden transition-colors">
+                    <div class="p-4 flex items-start gap-3 cursor-pointer hover:bg-surfaceHover transition-colors" onclick="toggleAutomation('auto-2', this)">
+                        <div class="w-6 h-6 rounded bg-app border border-border flex items-center justify-center text-textMuted shrink-0 mt-0.5">
+                            <i class="ph ph-git-merge"></i>
+                        </div>
+                        <div class="flex-1 flex flex-col gap-1">
+                            <div class="flex justify-between items-center">
+                                <h4 class="text-textMain text-sm font-medium">Assign PR reviewers</h4>
+                                <i class="ph ph-caret-down text-textMuted transition-transform auto-caret"></i>
+                            </div>
+                            <p class="text-textMuted text-xs leading-relaxed">Assign reviewers based on code changes and auto-approve low-risk PRs</p>
+                        </div>
+                    </div>
+                    <!-- Expanded Config -->
+                    <div id="auto-2" class="hidden bg-app border-t border-border p-4 flex-col gap-4">
+                        <div class="flex flex-col gap-1.5">
+                            <label class="text-xs text-textMuted">Code Path Match (Glob)</label>
+                            <input type="text" placeholder="e.g. src/components/**/*.tsx" class="bg-surface border border-border rounded-lg p-2 text-sm text-textMain outline-none w-full">
+                        </div>
+                        <div class="flex flex-col gap-1.5">
+                            <label class="text-xs text-textMuted">Assign to User/Team</label>
+                            <input type="text" placeholder="@frontend-team" class="bg-surface border border-border rounded-lg p-2 text-sm text-textMain outline-none w-full">
+                        </div>
+                        <div class="flex items-center gap-2 mt-1">
+                            <input type="checkbox" id="auto-2-approve" class="accent-primary rounded bg-surface border-border" checked>
+                            <label for="auto-2-approve" class="text-xs text-textMuted">Auto-approve if changes are &lt; 50 lines (No critical paths)</label>
+                        </div>
+                        <button class="bg-surfaceHover border border-border text-textMain py-2 rounded-lg text-sm font-medium mt-1 hover:bg-surface transition-colors flex items-center justify-center gap-2">
+                            <i class="ph ph-plus"></i> Create Automation
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Automation 3: Summarize changes daily -->
+                <div class="bg-surface border border-border rounded-xl flex flex-col overflow-hidden transition-colors">
+                    <div class="p-4 flex items-start gap-3 cursor-pointer hover:bg-surfaceHover transition-colors" onclick="toggleAutomation('auto-3', this)">
+                        <div class="w-6 h-6 rounded bg-app border border-border flex items-center justify-center text-textMuted shrink-0 mt-0.5">
+                            <i class="ph ph-envelope-simple"></i>
+                        </div>
+                        <div class="flex-1 flex flex-col gap-1">
+                            <div class="flex justify-between items-center">
+                                <h4 class="text-textMain text-sm font-medium">Summarize changes daily</h4>
+                                <i class="ph ph-caret-down text-textMuted transition-transform auto-caret"></i>
+                            </div>
+                            <p class="text-textMuted text-xs leading-relaxed">Post a daily Slack digest summarizing notable repository changes and risks from the previous day</p>
+                        </div>
+                    </div>
+                    <!-- Expanded Config -->
+                    <div id="auto-3" class="hidden bg-app border-t border-border p-4 flex-col gap-4">
+                        <div class="flex flex-col gap-1.5">
+                            <label class="text-xs text-textMuted">Slack Webhook URL / Channel ID</label>
+                            <input type="password" placeholder="https://hooks.slack.com/services/..." class="bg-surface border border-border rounded-lg p-2 text-sm text-textMain outline-none w-full">
+                        </div>
+                        <div class="flex flex-col gap-1.5">
+                            <label class="text-xs text-textMuted">Time to Post (Local)</label>
+                            <select class="bg-surface border border-border rounded-lg p-2 text-sm text-textMain outline-none w-full appearance-none">
+                                <option>09:00 AM</option>
+                                <option>05:00 PM</option>
+                            </select>
+                        </div>
+                        <button class="bg-surfaceHover border border-border text-textMain py-2 rounded-lg text-sm font-medium mt-1 hover:bg-surface transition-colors flex items-center justify-center gap-2">
+                            <i class="ph ph-plus"></i> Create Automation
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Automation 4: Fix bugs in Slack -->
+                <div class="bg-surface border border-border rounded-xl flex flex-col overflow-hidden transition-colors">
+                    <div class="p-4 flex items-start gap-3 cursor-pointer hover:bg-surfaceHover transition-colors" onclick="toggleAutomation('auto-4', this)">
+                        <div class="w-6 h-6 rounded bg-app border border-border flex items-center justify-center text-textMuted shrink-0 mt-0.5">
+                            <i class="ph ph-wrench"></i>
+                        </div>
+                        <div class="flex-1 flex flex-col gap-1">
+                            <div class="flex justify-between items-center">
+                                <h4 class="text-textMain text-sm font-medium">Fix bugs reported in Slack</h4>
+                                <i class="ph ph-caret-down text-textMuted transition-transform auto-caret"></i>
+                            </div>
+                            <p class="text-textMuted text-xs leading-relaxed">Monitor a Slack channel for bug reports, investigate the codebase, and fix with a PR</p>
+                        </div>
+                    </div>
+                    <!-- Expanded Config -->
+                    <div id="auto-4" class="hidden bg-app border-t border-border p-4 flex-col gap-4">
+                        <div class="flex flex-col gap-1.5">
+                            <label class="text-xs text-textMuted">Listen in Slack Channel</label>
+                            <input type="text" placeholder="#bug-reports" class="bg-surface border border-border rounded-lg p-2 text-sm text-textMain outline-none w-full">
+                        </div>
+                        <div class="flex flex-col gap-1.5">
+                            <label class="text-xs text-textMuted">Agent Instructions (Prompt)</label>
+                            <textarea placeholder="Prioritize UI rendering issues. Ignore backend timeout errors." class="bg-surface border border-border rounded-lg p-2 text-sm text-textMain outline-none w-full h-16 resize-none"></textarea>
+                        </div>
+                        <button class="bg-surfaceHover border border-border text-textMain py-2 rounded-lg text-sm font-medium mt-1 hover:bg-surface transition-colors flex items-center justify-center gap-2">
+                            <i class="ph ph-plus"></i> Create Automation
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Automation 5: Add test coverage (From the 'More' section) -->
+                <div class="bg-surface border border-border rounded-xl flex flex-col overflow-hidden transition-colors mt-2">
+                    <div class="p-4 flex items-start gap-3 cursor-pointer hover:bg-surfaceHover transition-colors" onclick="toggleAutomation('auto-5', this)">
+                        <div class="w-6 h-6 rounded bg-app border border-border flex items-center justify-center text-textMuted shrink-0 mt-0.5">
+                            <i class="ph ph-flask"></i>
+                        </div>
+                        <div class="flex-1 flex flex-col gap-1">
+                            <div class="flex justify-between items-center">
+                                <h4 class="text-textMain text-sm font-medium">Add test coverage</h4>
+                                <i class="ph ph-caret-down text-textMuted transition-transform auto-caret"></i>
+                            </div>
+                            <p class="text-textMuted text-xs leading-relaxed">Review recent changes and add tests for high-risk logic that lacks adequate coverage</p>
+                        </div>
+                    </div>
+                    <!-- Expanded Config -->
+                    <div id="auto-5" class="hidden bg-app border-t border-border p-4 flex-col gap-4">
+                        <div class="flex flex-col gap-1.5">
+                            <label class="text-xs text-textMuted">Testing Framework</label>
+                            <select class="bg-surface border border-border rounded-lg p-2 text-sm text-textMain outline-none w-full appearance-none">
+                                <option>Jest / Vitest (JS/TS)</option>
+                                <option>PyTest (Python)</option>
+                                <option>JUnit (Java)</option>
+                            </select>
+                        </div>
+                        <div class="flex flex-col gap-1.5">
+                            <label class="text-xs text-textMuted">Coverage Enforcement Target</label>
+                            <div class="flex items-center gap-2">
+                                <input type="range" min="50" max="100" value="80" class="flex-1 accent-primary">
+                                <span class="text-textMain text-sm w-8 text-right">80%</span>
+                            </div>
+                        </div>
+                        <button class="bg-surfaceHover border border-border text-textMain py-2 rounded-lg text-sm font-medium mt-1 hover:bg-surface transition-colors flex items-center justify-center gap-2">
+                            <i class="ph ph-plus"></i> Create Automation
+                        </button>
+                    </div>
+                </div>
+                
+            </div>
+        </main>
+    </div>
+
+    <!-- ================= CHAT DETAIL SCREEN ================= -->
+    <div id="screen-chat" class="screen flex-col h-full w-full bg-app">
+        <!-- Chat Header -->
+        <header class="flex items-center justify-between px-4 py-3 border-b border-border bg-app shrink-0">
+            <div class="flex items-center gap-3">
+                <button onclick="closeChat()" class="text-textMuted hover:text-textMain p-1 -ml-1">
+                    <i class="ph ph-caret-left text-xl"></i>
+                </button>
+                <h1 class="text-textMain font-medium truncate max-w-[200px]">Platform UI stability</h1>
+            </div>
+            <div class="flex items-center gap-3">
+                <button class="text-textMuted"><i class="ph ph-dots-three text-xl"></i></button>
+                <button class="bg-surface border border-border text-textMain px-3 py-1 text-xs rounded-md">View PR</button>
+            </div>
+        </header>
+
+        <!-- Tabs -->
+        <div class="flex items-center gap-2 px-4 py-2 border-b border-border bg-app shrink-0">
+            <button onclick="switchTab('chat')" id="tab-chat" class="px-3 py-1 rounded-md bg-surface text-textMain text-xs font-medium transition-colors">Chat</button>
+            <button onclick="switchTab('diff')" id="tab-diff" class="px-3 py-1 rounded-md text-textMuted hover:text-textMain text-xs font-medium transition-colors">Diff</button>
+        </div>
+
+        <!-- Chat Tab Content -->
+        <main id="content-chat" class="flex-1 overflow-y-auto no-scrollbar p-4 flex flex-col gap-4">
+            <!-- Bot Message -->
+            <div class="bg-surface border border-border rounded-xl p-4 flex flex-col gap-3">
+                <div class="font-mono text-xs text-textMuted whitespace-pre-wrap">-- Fast keyword search — runs in <5ms
+SELECT id, title, slug, doc_type, storage_type,
+       r2_bucket, r2_key, inline_content, summary
+FROM context_index</div>
+                <div class="text-xs text-textMuted border-b border-border pb-3">Worked for 3m 5s</div>
+                
+                <h2 class="text-textMain font-bold text-base mt-2">Audit (from your grep intent)</h2>
+                <p class="text-textMain text-sm">Relevant assembly points in <code class="bg-surfaceHover px-1 py-0.5 rounded text-xs">worker.js</code>:</p>
+                <ul class="list-disc pl-5 text-textMain text-sm space-y-2">
+                    <li><code class="bg-surfaceHover px-1 py-0.5 rounded text-xs">compiled_context</code> / cache: ~5850-5970 (<code class="bg-surfaceHover px-1 py-0.5 rounded text-xs">ai_compiled_context_cache</code>)</li>
+                    <li><strong>RAG block:</strong> ~5928-5952 (<code class="bg-surfaceHover px-1 py-0.5 rounded text-xs">vectorizeRagSearch</code> -> <code class="bg-surfaceHover px-1 py-0.5 rounded text-xs">ragContext</code>)</li>
+                    <li><strong>Final system string:</strong> ~6125-6135 <code class="bg-surfaceHover px-1 py-0.5 rounded text-xs">buildModeContext()</code> then <code class="bg-surfaceHover px-1 py-0.5 rounded text-xs">finalSystem</code></li>
+                </ul>
+
+                <h2 class="text-textMain font-bold text-base mt-4">What was implemented</h2>
+                <ol class="list-decimal pl-5 text-textMain text-sm space-y-2">
+                    <li><code class="bg-surfaceHover px-1 py-0.5 rounded text-xs">fetchContextIndex(env, db, queryText, scope)</code></li>
+                </ol>
+            </div>
+
+            <!-- Actions & Input -->
+            <div class="mt-auto pt-4 flex flex-col gap-3">
+                <div class="flex gap-2">
+                    <button class="border border-border bg-surface text-textMain px-3 py-1.5 rounded-full text-xs font-medium">Fix merge conflicts</button>
+                </div>
+                
+                <div class="bg-surface border border-border rounded-xl p-3 flex flex-col gap-3">
+                    <input type="text" class="bg-transparent text-textMain placeholder-textMuted outline-none w-full text-sm" placeholder="Add a follow up">
+                    <div class="flex items-center justify-between text-textMuted mt-1">
+                        <button class="text-xs hover:text-textMain">Composer 2</button>
+                        <div class="flex items-center gap-3">
+                            <button><i class="ph ph-image text-lg"></i></button>
+                            <button class="bg-textMain text-app rounded-full p-1"><i class="ph-fill ph-microphone text-sm"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Diff Tab Content (Hidden initially) -->
+        <main id="content-diff" class="flex-1 overflow-y-auto no-scrollbar p-2 hidden flex-col gap-2">
+            
+            <!-- File Item 1 (Expanded Demo) -->
+            <div class="border border-border rounded-lg bg-app overflow-hidden">
+                <div class="file-header expanded flex items-center justify-between p-3 bg-surface cursor-pointer" onclick="toggleFile('file-1', this)">
+                    <div class="flex items-center gap-2">
+                        <i class="ph ph-caret-right caret-icon text-textMuted transition-transform"></i>
+                        <span class="text-textMain text-xs font-mono">dashboard/auth-signin.html</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <span class="text-green-400 text-xs">+28</span>
+                        <span class="text-red-400 text-xs">-1</span>
+                        <div class="w-3 h-3 rounded-sm border border-border"></div>
+                    </div>
+                </div>
+                
+                <!-- Expanded Code View -->
+                <div id="file-1" class="file-content expanded bg-app border-t border-border font-mono text-[11px] leading-relaxed overflow-x-auto">
+                    <!-- Context spacer -->
+                    <div class="flex text-textMuted bg-surfaceHover px-2 py-1 text-[10px] items-center gap-2 border-b border-border">
+                        <i class="ph ph-caret-up"></i> 526 unmodified lines
+                    </div>
+                    
+                    <div class="flex px-2 py-0.5 text-textMuted">
+                        <span class="w-6 text-right mr-3 opacity-50">527</span> &lt;/div&gt;
+                    </div>
+                    <div class="flex px-2 py-0.5 text-textMuted">
+                        <span class="w-6 text-right mr-3 opacity-50">528</span> &lt;/div&gt;
+                    </div>
+                    <div class="flex px-2 py-0.5 text-textMuted">
+                        <span class="w-6 text-right mr-3 opacity-50">529</span> &lt;button type="submit" id="submitBtn" c...&gt;
+                    </div>
+                    <div class="flex px-2 py-0.5">
+                        <span class="w-6 text-right mr-3 opacity-0"></span>
+                    </div>
+
+                    <!-- Deletion -->
+                    <div class="flex px-2 py-0.5 bg-diffSubBg text-diffSubText relative">
+                        <div class="absolute left-0 top-0 bottom-0 w-1 bg-red-500/50"></div>
+                        <span class="w-6 text-right mr-3 opacity-70">531</span> &lt;div style="margin: 20px 0; text-align...&gt;
+                    </div>
+                    
+                    <!-- Addition -->
+                    <div class="flex px-2 py-0.5 bg-diffAddBg text-diffAddText relative">
+                        <div class="absolute left-0 top-0 bottom-0 w-1 bg-green-500/50"></div>
+                        <span class="w-6 text-right mr-3 opacity-70">531</span> &lt;div id="oauthProviderRow" style="marg...&gt;
+                    </div>
+                    <div class="flex px-2 py-0.5 bg-diffAddBg text-diffAddText relative">
+                        <div class="absolute left-0 top-0 bottom-0 w-1 bg-green-500/50"></div>
+                        <span class="w-6 text-right mr-3 opacity-70">532</span>     &lt;a id="googleSignIn" href="/api/oa...&gt;
+                    </div>
+                    <div class="flex px-2 py-0.5 bg-diffAddBg text-diffAddText relative">
+                        <div class="absolute left-0 top-0 bottom-0 w-1 bg-green-500/50"></div>
+                        <span class="w-6 text-right mr-3 opacity-70">533</span>         &lt;svg width="18" height="18" vi...&gt;
+                    </div>
+                    <div class="flex px-2 py-0.5 bg-diffAddBg text-diffAddText relative">
+                        <div class="absolute left-0 top-0 bottom-0 w-1 bg-green-500/50"></div>
+                        <span class="w-6 text-right mr-3 opacity-70">534</span>         Sign in with Google
+                    </div>
+                    <div class="flex px-2 py-0.5 bg-diffAddBg text-diffAddText relative">
+                        <div class="absolute left-0 top-0 bottom-0 w-1 bg-green-500/50"></div>
+                        <span class="w-6 text-right mr-3 opacity-70">535</span>     &lt;/a&gt;
+                    </div>
+
+                    <!-- Context spacer -->
+                    <div class="flex text-textMuted bg-surfaceHover px-2 py-1 mt-1 text-[10px] items-center gap-2 border-y border-border">
+                        <i class="ph ph-caret-up-down"></i> 38 unmodified lines
+                    </div>
+                    
+                    <div class="flex px-2 py-0.5 mt-1 text-textMuted">
+                        <span class="w-6 text-right mr-3 opacity-50">574</span> &lt;/div&gt;
+                    </div>
+                    <div class="flex px-2 py-0.5 text-textMuted">
+                        <span class="w-6 text-right mr-3 opacity-50">575</span> 
+                    </div>
+                    <div class="flex px-2 py-0.5 text-textMuted">
+                        <span class="w-6 text-right mr-3 opacity-50">576</span> &lt;script&gt;
+                    </div>
+                    <div class="flex px-2 py-0.5 text-textMuted">
+                        <span class="w-6 text-right mr-3 opacity-50">577</span> (function() {
+                    </div>
+
+                    <!-- More additions block -->
+                    <div class="flex px-2 py-0.5 bg-diffAddBg text-diffAddText relative">
+                        <div class="absolute left-0 top-0 bottom-0 w-1 bg-green-500/50"></div>
+                        <span class="w-6 text-right mr-3 opacity-70">578</span>     var host = (window.location.hostname || ''...
+                    </div>
+                    <div class="flex px-2 py-0.5 bg-diffAddBg text-diffAddText relative">
+                        <div class="absolute left-0 top-0 bottom-0 w-1 bg-green-500/50"></div>
+                        <span class="w-6 text-right mr-3 opacity-70">579</span>     var isCidiSandbox = host === 'inneranimal-...
+                    </div>
+                    <div class="flex px-2 py-0.5 bg-diffAddBg text-diffAddText relative">
+                        <div class="absolute left-0 top-0 bottom-0 w-1 bg-green-500/50"></div>
+                        <span class="w-6 text-right mr-3 opacity-70">580</span>         || host.endsWith('.inneranimal-dashboar...
+                    </div>
+                    <div class="flex px-2 py-0.5 bg-diffAddBg text-diffAddText relative">
+                        <div class="absolute left-0 top-0 bottom-0 w-1 bg-green-500/50"></div>
+                        <span class="w-6 text-right mr-3 opacity-70">581</span>     if (isCidiSandbox) {
+                    </div>
+                    <div class="flex px-2 py-0.5 bg-diffAddBg text-diffAddText relative">
+                        <div class="absolute left-0 top-0 bottom-0 w-1 bg-green-500/50"></div>
+                        <span class="w-6 text-right mr-3 opacity-70">582</span>         var oauthRow = document.getElementById...
+                    </div>
+                </div>
+            </div>
+
+            <!-- File Item 2 (Collapsed) -->
+            <div class="border border-border rounded-lg bg-surface overflow-hidden hover:border-textMuted/50 transition-colors">
+                <div class="file-header flex items-center justify-between p-3 cursor-pointer" onclick="toggleFile('file-2', this)">
+                    <div class="flex items-center gap-2">
+                        <i class="ph ph-caret-right caret-icon text-textMuted transition-transform"></i>
+                        <span class="text-textMain text-xs font-mono">...l-dashboard_RUNBOOK.md</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <span class="text-green-400 text-xs">+65</span>
+                        <span class="text-textMuted text-xs font-mono bg-border px-1 rounded">New</span>
+                        <div class="w-3 h-3 rounded-sm border border-border"></div>
+                    </div>
+                </div>
+                <div id="file-2" class="file-content bg-app border-t border-border p-4 text-xs text-textMuted">
+                    (Content hidden for mockup)
+                </div>
+            </div>
+
+            <!-- File Item 3 (Collapsed) -->
+            <div class="border border-border rounded-lg bg-surface overflow-hidden hover:border-textMuted/50 transition-colors">
+                <div class="file-header flex items-center justify-between p-3 cursor-pointer" onclick="toggleFile('file-3', this)">
+                    <div class="flex items-center gap-2">
+                        <i class="ph ph-caret-right caret-icon text-textMuted transition-transform"></i>
+                        <span class="text-textMain text-xs font-mono">...BOX_UI_TO_PRODUCTION.md</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <span class="text-green-400 text-xs">+74</span>
+                        <span class="text-red-400 text-xs">-57</span>
+                        <div class="w-3 h-3 rounded-sm border border-border"></div>
+                    </div>
+                </div>
+                <div id="file-3" class="file-content bg-app border-t border-border p-4 text-xs text-textMuted">
+                    (Content hidden for mockup)
+                </div>
+            </div>
+
+            <!-- File Item 4 (Collapsed) -->
+            <div class="border border-border rounded-lg bg-surface overflow-hidden hover:border-textMuted/50 transition-colors">
+                <div class="file-header flex items-center justify-between p-3 cursor-pointer" onclick="toggleFile('file-4', this)">
+                    <div class="flex items-center gap-2">
+                        <i class="ph ph-caret-right caret-icon text-textMuted transition-transform"></i>
+                        <span class="text-textMain text-xs font-mono">docs/cursor-session-log.md</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <span class="text-green-400 text-xs">+478</span>
+                        <div class="w-3 h-3 rounded-sm border border-border"></div>
+                    </div>
+                </div>
+                <div id="file-4" class="file-content bg-app border-t border-border p-4 text-xs text-textMuted">
+                    (Content hidden for mockup)
+                </div>
+            </div>
+            
+        </main>
+    </div>
+
+    <!-- ================= BOTTOM REPO DRAWER ================= -->
+    <div id="drawer-overlay" class="overlay fixed inset-0 bg-black/60 z-40" onclick="closeRepoDrawer()"></div>
+    <div id="repo-drawer" class="drawer fixed bottom-0 left-0 right-0 bg-surface rounded-t-2xl z-50 border-t border-border flex flex-col max-h-[70vh]">
+        <div class="w-12 h-1.5 bg-border rounded-full mx-auto mt-3 mb-2"></div>
+        <div class="p-4 border-b border-border">
+            <h3 class="text-textMain font-medium">Select Repository</h3>
+            <div class="mt-3 relative">
+                <i class="ph ph-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-textMuted"></i>
+                <input type="text" placeholder="Search repos..." class="w-full bg-app border border-border rounded-lg py-2 pl-9 pr-3 text-sm text-textMain outline-none focus:border-primary">
+            </div>
+        </div>
+        <div class="overflow-y-auto p-2">
+            <button class="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-surfaceHover transition-colors text-left" onclick="closeRepoDrawer()">
+                <i class="ph-fill ph-check-circle text-primary"></i>
+                <div>
+                    <div class="text-textMain text-sm">SamPrimeaux/inneranimalmedia-agentsam-dashboard</div>
+                    <div class="text-textMuted text-xs">main</div>
+                </div>
+            </button>
+            <button class="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-surfaceHover transition-colors text-left" onclick="closeRepoDrawer()">
+                <div class="w-4 h-4 rounded-full border border-border ml-0.5"></div>
+                <div>
+                    <div class="text-textMain text-sm">SamPrimeaux/iam-pty-server</div>
+                    <div class="text-textMuted text-xs">production</div>
+                </div>
+            </button>
+            <button class="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-surfaceHover transition-colors text-left" onclick="closeRepoDrawer()">
+                <div class="w-4 h-4 rounded-full border border-border ml-0.5"></div>
+                <div>
+                    <div class="text-textMain text-sm">SamPrimeaux/docs-site</div>
+                    <div class="text-textMuted text-xs">main</div>
+                </div>
+            </button>
+        </div>
+    </div>
+
+    <!-- ================= JAVASCRIPT ================= -->
+    <script>
+        // Tab Navigation for Top Header
+        function switchMainTab(tab) {
+            // Update nav styling
+            const navAgents = document.getElementById('nav-agents');
+            const navAutomations = document.getElementById('nav-automations');
+            const navDashboard = document.getElementById('nav-dashboard');
+            
+            navAgents.className = tab === 'agents' ? 'text-textMain font-medium transition-colors' : 'text-textMuted hover:text-textMain transition-colors';
+            navAutomations.className = tab === 'automations' ? 'text-textMain font-medium transition-colors' : 'text-textMuted hover:text-textMain transition-colors';
+            navDashboard.className = tab === 'dashboard' ? 'text-textMain font-medium transition-colors' : 'text-textMuted hover:text-textMain transition-colors';
+            
+            // Update active screen visibility
+            document.getElementById('screen-main').classList.remove('active');
+            document.getElementById('screen-automations').classList.remove('active');
+            document.getElementById('screen-chat').classList.remove('active');
+            
+            if (tab === 'agents') {
+                document.getElementById('screen-main').classList.add('active');
+            } else if (tab === 'automations') {
+                document.getElementById('screen-automations').classList.add('active');
+            }
+        }
+
+        // Screen Navigation
+        function openChat() {
+            document.getElementById('screen-main').classList.remove('active');
+            document.getElementById('screen-chat').classList.add('active');
+        }
+
+        function closeChat() {
+            document.getElementById('screen-chat').classList.remove('active');
+            document.getElementById('screen-main').classList.add('active');
+        }
+
+        // Tab Switching in Chat
+        function switchTab(tabName) {
+            const tabChat = document.getElementById('tab-chat');
+            const tabDiff = document.getElementById('tab-diff');
+            const contentChat = document.getElementById('content-chat');
+            const contentDiff = document.getElementById('content-diff');
+
+            if (tabName === 'chat') {
+                tabChat.classList.replace('bg-transparent', 'bg-surface');
+                tabChat.classList.replace('text-textMuted', 'text-textMain');
+                
+                tabDiff.classList.replace('bg-surface', 'bg-transparent');
+                tabDiff.classList.replace('text-textMain', 'text-textMuted');
+                
+                contentChat.classList.remove('hidden');
+                contentChat.classList.add('flex');
+                contentDiff.classList.add('hidden');
+                contentDiff.classList.remove('flex');
+            } else {
+                tabDiff.classList.replace('bg-transparent', 'bg-surface');
+                tabDiff.classList.replace('text-textMuted', 'text-textMain');
+                
+                tabChat.classList.replace('bg-surface', 'bg-transparent');
+                tabChat.classList.replace('text-textMain', 'text-textMuted');
+                
+                contentDiff.classList.remove('hidden');
+                contentDiff.classList.add('flex');
+                contentChat.classList.add('hidden');
+                contentChat.classList.remove('flex');
+            }
+        }
+
+        // Repo Drawer Toggle
+        function toggleRepoDrawer() {
+            const drawer = document.getElementById('repo-drawer');
+            const overlay = document.getElementById('drawer-overlay');
+            drawer.classList.add('open');
+            overlay.classList.add('open');
+        }
+
+        function closeRepoDrawer() {
+            const drawer = document.getElementById('repo-drawer');
+            const overlay = document.getElementById('drawer-overlay');
+            drawer.classList.remove('open');
+            overlay.classList.remove('open');
+        }
+
+        // Automation Accordion Toggle
+        function toggleAutomation(id, headerElement) {
+            const content = document.getElementById(id);
+            const caret = headerElement.querySelector('.auto-caret');
+            const isHidden = content.classList.contains('hidden');
+            
+            if (isHidden) {
+                // Expand
+                content.classList.remove('hidden');
+                content.classList.add('flex');
+                caret.classList.add('expanded');
+                headerElement.parentElement.classList.replace('border-border', 'border-textMuted/50');
+            } else {
+                // Collapse
+                content.classList.add('hidden');
+                content.classList.remove('flex');
+                caret.classList.remove('expanded');
+                headerElement.parentElement.classList.replace('border-textMuted/50', 'border-border');
+            }
+        }
+
+        // File Accordion Toggle
+        function toggleFile(fileId, headerElement) {
+            const content = document.getElementById(fileId);
+            const isExpanded = content.classList.contains('expanded');
+            
+            if (isExpanded) {
+                content.classList.remove('expanded');
+                headerElement.classList.remove('expanded');
+                headerElement.parentElement.classList.replace('bg-app', 'bg-surface');
+            } else {
+                content.classList.add('expanded');
+                headerElement.classList.add('expanded');
+                headerElement.parentElement.classList.replace('bg-surface', 'bg-app');
+            }
+        }
+    </script>
+</body>
+</html>
