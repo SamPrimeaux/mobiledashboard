@@ -11,13 +11,13 @@
             theme: {
                 extend: {
                     colors: {
-                        app: '#0e0e0e',
-                        surface: '#181818',
-                        surfaceHover: '#242424',
-                        border: '#2a2a2a',
-                        primary: '#3b82f6',
-                        textMain: '#ececec',
-                        textMuted: '#8b8b8b',
+                        app: 'var(--bg-app)',
+                        surface: 'var(--bg-surface)',
+                        surfaceHover: 'var(--bg-surface-hover)',
+                        border: 'var(--border-main)',
+                        primary: 'var(--primary)',
+                        textMain: 'var(--text-main)',
+                        textMuted: 'var(--text-muted)',
                         diffAddBg: '#10331b',
                         diffAddText: '#4ade80',
                         diffSubBg: '#3f1115',
@@ -32,11 +32,22 @@
         }
     </script>
     <style>
+        :root {
+            /* Agent Sam Theme Tokens - Prepped for Backend */
+            --bg-app: #0e0e0e;
+            --bg-surface: #181818;
+            --bg-surface-hover: #242424;
+            --border-main: #2a2a2a;
+            --primary: #3b82f6;
+            --text-main: #ececec;
+            --text-muted: #8b8b8b;
+        }
+
         /* Mobile optimization & scrollbar hiding */
         body {
             -webkit-tap-highlight-color: transparent;
-            background-color: #0e0e0e;
-            color: #ececec;
+            background-color: var(--bg-app);
+            color: var(--text-main);
             overflow-x: hidden;
         }
         .no-scrollbar::-webkit-scrollbar {
