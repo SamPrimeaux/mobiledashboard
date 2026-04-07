@@ -1,9 +1,15 @@
 {
-  "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "mobiledashboard",
-  "pages_build_output_dir": ".",
-  "compatibility_date": "2026-04-02",
+  "name": "agent",
+  "main": "worker.js",
+  "compatibility_date": "2026-04-05",
   "compatibility_flags": [
     "nodejs_compat"
+  ],
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "inneranimalmedia",
+      "database_id": "cc3db6f4-86c3-47d7-be08-1ffdde5f71b0"
+    }
   ]
 }
