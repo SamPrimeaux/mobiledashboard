@@ -21,3 +21,21 @@ out/
 # OS Files
 .DS_Store
 Thumbs.db
+
+# Agent Meauxbility local runtime output
+tmp/agent-meauxbility/
+.env.agent-meauxbility-overnight
+
+# Agent Meauxbility local runtime output
+tmp/
+.env.agent-meauxbility-overnight
+
+# Agent Meauxbility local runtime output and secrets
+tmp/
+.env*
+!.env.example
+*.local
+*_logs/
+*.log
+latest.out
+latest.pid
