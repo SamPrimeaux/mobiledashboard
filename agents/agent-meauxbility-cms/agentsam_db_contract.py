@@ -1,24 +1,26 @@
 #!/usr/bin/env python3
-# Agent Meauxbility CMS — Agent Sam DB Contract
+# Agent Meauxbility CMS — Agent Sam + CMS DB Contract
 #
+# Repo: SamPrimeaux/mobiledashboard
 # Purpose:
-# This file tells Nano/Mini/Agent Sam which agentsam_* tables matter for
-# end-to-end generation, validation, telemetry, artifact registration,
-# routing, workflow execution, and CMS editor runtime proof.
+# Defines the relevant agentsam_* and cms_* tables for full-stack CMS editor,
+# component-library generation, workflow execution, artifacts, telemetry,
+# prompt routing, and end-to-end validation.
 #
-# This is not a migration file.
-# This is a repo-local contract/reference used by generation and validation scripts.
+# This is not a migration. It is a runtime/generation contract.
 
-AGENTSAM_REQUIRED_TABLES = {
-    "identity_scope": [
+AGENTSAM_CMS_RELEVANT_TABLES = {
+    "workspace_and_identity": [
         "agentsam_workspace",
-        "auth_users",
-        "auth_sessions",
-        "user_oauth_tokens",
+        "agentsam_workspace_state",
+        "agentsam_user_policy",
+        "agentsam_user_feature_override",
+        "agentsam_subscription_registry",
     ],
 
-    "planning_and_project_context": [
+    "planning_project_and_todos": [
         "agentsam_plans",
+        "agentsam_plan_tasks",
         "agentsam_project_context",
         "agentsam_todo",
         "agentsam_artifacts",
@@ -33,8 +35,8 @@ AGENTSAM_REQUIRED_TABLES = {
 
     "execution_runtime": [
         "agentsam_executions",
-        "agentsam_execution_steps",
         "agentsam_execution_context",
+        "agentsam_execution_steps",
         "agentsam_execution_dependency_graph",
         "agentsam_execution_performance_metrics",
     ],
@@ -44,56 +46,89 @@ AGENTSAM_REQUIRED_TABLES = {
         "agentsam_tool_chain",
         "agentsam_tool_call_log",
         "agentsam_tool_cache",
+        "agentsam_tool_stats_compacted",
         "agentsam_approval_queue",
     ],
 
-    "commands_and_scripts": [
+    "commands_scripts_and_allowlists": [
         "agentsam_commands",
         "agentsam_command_run",
+        "agentsam_command_allowlist",
+        "agentsam_command_pattern",
         "agentsam_scripts",
         "agentsam_script_runs",
+        "agentsam_slash_commands",
+        "agentsam_ignore_pattern",
+        "agentsam_fetch_domain_allowlist",
     ],
 
-    "prompt_system": [
+    "prompt_routing_and_cache": [
         "agentsam_prompt_routes",
         "agentsam_prompt_versions",
         "agentsam_prompt_cache_keys",
+        "agentsam_context_digest",
+        "agentsam_compaction_events",
     ],
 
-    "model_routing_and_memory": [
+    "model_catalog_routing_and_usage": [
         "agentsam_ai",
         "agentsam_model_catalog",
+        "agentsam_model_tier",
         "agentsam_routing_arms",
+        "agentsam_route_requirements",
         "agentsam_model_routing_memory",
+        "agentsam_model_drift_signals",
         "agentsam_usage_events",
+        "agentsam_usage_rollups_daily",
+        "agentsam_analytics",
+        "agentsam_agent_run",
+    ],
+
+    "subagents_skills_and_memory": [
+        "agentsam_subagent_profile",
+        "agentsam_skill",
+        "agentsam_skill_revision",
+        "agentsam_skill_invocation",
+        "agentsam_memory",
+        "agentsam_rules_document",
+        "agentsam_bootstrap",
     ],
 
     "mcp_runtime": [
+        "agentsam_mcp_servers",
+        "agentsam_mcp_allowlist",
         "agentsam_mcp_tools",
         "agentsam_mcp_tool_execution",
         "agentsam_mcp_workflows",
-        "mcp_workflows",
-        "mcp_workflow_runs",
-        "mcp_tool_calls",
-        "mcp_usage_log",
-        "mcp_audit_log",
     ],
 
-    "evaluation_and_quality": [
+    "quality_eval_guardrails": [
         "agentsam_eval_suites",
         "agentsam_eval_cases",
         "agentsam_eval_runs",
-        "agentsam_skill_invocation",
-        "agentsam_skill_revision",
+        "agentsam_guardrails",
+        "agentsam_guardrail_rulesets",
+        "agentsam_guardrail_events",
+        "agentsam_task_slos",
+        "agentsam_escalation",
     ],
 
-    "hooks_and_events": [
+    "hooks_webhooks_health_and_ops": [
         "agentsam_hook",
         "agentsam_hook_execution",
         "agentsam_webhook_events",
-        "agentsam_compaction_events",
+        "agentsam_webhook_weekly",
         "agentsam_health_daily",
         "agentsam_deployment_health",
+        "agentsam_error_log",
+        "agentsam_cron_runs",
+        "agentsam_feature_flag",
+    ],
+
+    "browser_code_and_specialized_jobs": [
+        "agentsam_browser_trusted_origin",
+        "agentsam_code_index_job",
+        "agentsam_cad_jobs",
     ],
 
     "cms_runtime": [
@@ -108,61 +143,112 @@ AGENTSAM_REQUIRED_TABLES = {
     ],
 }
 
-# Minimum proof required for a real generation run.
-# If these are missing or zero, the run is not considered end-to-end valid.
-AGENTSAM_E2E_REQUIRED_COUNTS = {
-    "agentsam_plans": 1,
-    "agentsam_project_context": 1,
-    "agentsam_todo": 1,
-    "agentsam_workflows": 1,
-    "agentsam_workflow_runs": 1,
-    "agentsam_workflow_nodes": 1,
-    "agentsam_workflow_edges": 1,
-    "agentsam_prompt_routes": 1,
-    "agentsam_prompt_versions": 1,
-    "agentsam_prompt_cache_keys": 1,
-    "agentsam_tool_chain": 1,
-    "agentsam_execution_steps": 1,
-    "agentsam_execution_dependency_graph": 1,
-    "agentsam_execution_performance_metrics": 1,
-    "agentsam_artifacts": 1,
-}
+EXCLUDED_LEGACY_OR_BACKUP_TABLES = [
+    "agentsam_executions_backup_20260509_014549",
+    "agentsam_plans_old",
+]
 
-# Rows that must be written/updated by Agent Meauxbility CMS generation.
-AGENT_MEAUXBILITY_REQUIRED_TOUCHPOINTS = [
+E2E_REQUIRED_NONZERO_TABLES = [
+    "agentsam_plans",
+    "agentsam_project_context",
+    "agentsam_todo",
+    "agentsam_workflows",
+    "agentsam_workflow_runs",
+    "agentsam_workflow_nodes",
+    "agentsam_workflow_edges",
+    "agentsam_prompt_routes",
+    "agentsam_prompt_versions",
+    "agentsam_prompt_cache_keys",
+    "agentsam_tool_chain",
+    "agentsam_execution_steps",
+    "agentsam_execution_dependency_graph",
+    "agentsam_execution_performance_metrics",
+    "agentsam_artifacts",
+    "cms_pages",
+    "cms_page_sections",
+    "cms_section_components",
+    "cms_assets",
+    "cms_themes",
+]
+
+AGENT_MEAUXBILITY_TOUCHPOINTS = [
     {
-        "phase": "plan",
-        "tables": ["agentsam_plans", "agentsam_project_context", "agentsam_todo"],
-        "requirement": "A run must link a plan, project context, and todo before generation.",
+        "phase": "plan_and_context",
+        "tables": [
+            "agentsam_plans",
+            "agentsam_plan_tasks",
+            "agentsam_project_context",
+            "agentsam_todo",
+        ],
     },
     {
         "phase": "workflow_graph",
-        "tables": ["agentsam_workflows", "agentsam_workflow_runs", "agentsam_workflow_nodes", "agentsam_workflow_edges"],
-        "requirement": "A run must have graph identity and node/edge structure.",
+        "tables": [
+            "agentsam_workflows",
+            "agentsam_workflow_runs",
+            "agentsam_workflow_nodes",
+            "agentsam_workflow_edges",
+        ],
     },
     {
         "phase": "prompt_routing",
-        "tables": ["agentsam_prompt_routes", "agentsam_prompt_versions", "agentsam_prompt_cache_keys"],
-        "requirement": "A run must use routeable prompts and compiled prompt cache keys.",
+        "tables": [
+            "agentsam_prompt_routes",
+            "agentsam_prompt_versions",
+            "agentsam_prompt_cache_keys",
+        ],
     },
     {
-        "phase": "tool_execution",
-        "tables": ["agentsam_tool_chain", "agentsam_execution_steps", "agentsam_execution_dependency_graph"],
-        "requirement": "Every phase must create a chain row, execution step, and dependency edge where applicable.",
+        "phase": "execution",
+        "tables": [
+            "agentsam_executions",
+            "agentsam_execution_context",
+            "agentsam_execution_steps",
+            "agentsam_execution_dependency_graph",
+            "agentsam_execution_performance_metrics",
+        ],
     },
     {
-        "phase": "artifact_output",
-        "tables": ["agentsam_artifacts"],
-        "requirement": "Every R2 object produced by generation must be registered as an artifact.",
+        "phase": "tools",
+        "tables": [
+            "agentsam_tools",
+            "agentsam_tool_chain",
+            "agentsam_tool_call_log",
+            "agentsam_tool_cache",
+            "agentsam_approval_queue",
+        ],
     },
     {
-        "phase": "usage_and_cost",
-        "tables": ["agentsam_usage_events", "agentsam_execution_performance_metrics"],
-        "requirement": "Every model-backed generation must write usage/cost/performance telemetry.",
+        "phase": "models_and_usage",
+        "tables": [
+            "agentsam_model_catalog",
+            "agentsam_routing_arms",
+            "agentsam_route_requirements",
+            "agentsam_model_routing_memory",
+            "agentsam_usage_events",
+        ],
+    },
+    {
+        "phase": "artifacts",
+        "tables": [
+            "agentsam_artifacts",
+        ],
+    },
+    {
+        "phase": "cms_library",
+        "tables": [
+            "cms_pages",
+            "cms_site_pages",
+            "cms_page_sections",
+            "cms_section_components",
+            "cms_assets",
+            "cms_themes",
+            "cms_theme_preferences",
+            "cms_navigation_menus",
+        ],
     },
 ]
 
-# Canonical safe R2 prefixes for this project.
 SAFE_R2_PREFIXES = [
     "cms/test-runs/agent-meauxbility/",
     "dev/agent-meauxbility/",
@@ -170,7 +256,6 @@ SAFE_R2_PREFIXES = [
     "captures/inneranimalmedia/results/",
 ]
 
-# Paths that require explicit approval before any generated script may write.
 LIVE_PROMOTION_BLOCKED_PREFIXES = [
     "pages/",
     "components/",
@@ -182,21 +267,12 @@ LIVE_PROMOTION_BLOCKED_PREFIXES = [
     "cms/pages/",
 ]
 
-# Model routing policy.
 MODEL_POLICY = {
     "default": "gpt-5.4-nano",
     "escalation": "gpt-5.4-mini",
     "max_cost_usd_default": 0.25,
-    "escalate_when": [
-        "schema inference fails",
-        "build fails twice",
-        "generated code is incomplete",
-        "validation required rows are missing",
-        "Nano output is too shallow for architectural reconciliation",
-    ],
 }
 
-# Multi-tenant safety policy.
 MULTITENANT_POLICY = {
     "required_env": [
         "IAM_D1_DB",
@@ -210,29 +286,31 @@ MULTITENANT_POLICY = {
         "ws_inneranimalmedia",
         "au_871d920d1233cbd1",
     ],
-    "rule": "Reusable scripts must fail if tenant/workspace/user scope is missing. Sam-specific IDs may exist only in local env files or explicit test fixtures.",
 }
 
-
-def flatten_required_tables():
+def flatten_relevant_tables():
     tables = []
-    for group in AGENTSAM_REQUIRED_TABLES.values():
+    for group in AGENTSAM_CMS_RELEVANT_TABLES.values():
         tables.extend(group)
     return sorted(set(tables))
 
+def active_contract_tables():
+    excluded = set(EXCLUDED_LEGACY_OR_BACKUP_TABLES)
+    return [t for t in flatten_relevant_tables() if t not in excluded]
 
 def contract_summary():
     return {
-        "required_table_count": len(flatten_required_tables()),
-        "required_groups": sorted(AGENTSAM_REQUIRED_TABLES.keys()),
-        "e2e_required_counts": AGENTSAM_E2E_REQUIRED_COUNTS,
-        "touchpoints": AGENT_MEAUXBILITY_REQUIRED_TOUCHPOINTS,
+        "relevant_table_count": len(flatten_relevant_tables()),
+        "active_contract_table_count": len(active_contract_tables()),
+        "groups": AGENTSAM_CMS_RELEVANT_TABLES,
+        "excluded": EXCLUDED_LEGACY_OR_BACKUP_TABLES,
+        "e2e_required_nonzero_tables": E2E_REQUIRED_NONZERO_TABLES,
+        "touchpoints": AGENT_MEAUXBILITY_TOUCHPOINTS,
         "safe_r2_prefixes": SAFE_R2_PREFIXES,
         "blocked_live_prefixes": LIVE_PROMOTION_BLOCKED_PREFIXES,
         "model_policy": MODEL_POLICY,
         "multitenant_policy": MULTITENANT_POLICY,
     }
-
 
 if __name__ == "__main__":
     import json
