@@ -8,8 +8,14 @@
   "d1_databases": [
     {
       "binding": "DB",
-      "database_name": "inneranimalmedia",
-      "database_id": "cc3db6f4-86c3-47d7-be08-1ffdde5f71b0"
+      "database_name": "inneranimalmedia-business",
+      "database_id": "cf87b717-d4e2-4cf8-bab0-a81268e32d49"
+    }
+  ],
+  "r2_buckets": [
+    {
+      "binding": "CMS",
+      "bucket_name": "cms"
     }
   ]
 }
