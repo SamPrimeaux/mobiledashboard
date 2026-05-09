@@ -1,36 +1,14 @@
-# mobiledashboard
+#!/usr/bin/env python3
+from pathlib import Path
+import re
 
-A high-performance, mobile-optimized Agent Platform dashboard built with Tailwind CSS and Phosphor Icons.
+ROOT = Path(__file__).resolve().parents[2]
+README = ROOT / "README.md"
 
-## Features
-- **Mobile-First Design**: Optimized for touch interactions and small screens.
-- **Agent Composer**: Quick access to AI agent interactions.
-- **Automations**: Manage and deploy workflow automations.
-- **History & Diffs**: Review past agent activities with detailed code diffs.
-- **CI/CD Ready**: Configured for seamless deployment via Cloudflare Pages.
+START = "<!-- AGENT_MEAUXBILITY_FILETREE_START -->"
+END = "<!-- AGENT_MEAUXBILITY_FILETREE_END -->"
 
-## Deployment to Cloudflare Pages
-
-This repository is designed to work out-of-the-box with Cloudflare Pages.
-
-1.  Log in to the [Cloudflare Dashboard](https://dash.cloudflare.com/).
-2.  Navigate to **Workers & Pages** > **Create application** > **Pages** > **Connect to Git**.
-3.  Select the `mobiledashboard` repository.
-4.  **Build Settings**:
-    - **Framework preset**: None (Static site)
-    - **Build command**: (Leave empty)
-    - **Build output directory**: `/` (Root)
-5.  Click **Save and Deploy**.
-
-Cloudflare will automatically deploy every push to the `main` branch.
-
-## Tech Stack
-- **HTML5**
-- **Tailwind CSS** (via CDN for rapid prototyping)
-- **Phosphor Icons**
-- **Cloudflare Pages** (CI/CD)
-
-<!-- AGENT_MEAUXBILITY_FILETREE_START -->
+section = f'''{START}
 # Agent Meauxbility App Map
 
 This repo powers `https://agent.meauxbility.workers.dev`.
@@ -112,4 +90,16 @@ py2 -> add agentsam_* table inventory
 py3 -> add cms_* table inventory
 py4 -> add API map and validation commands
 ```
-<!-- AGENT_MEAUXBILITY_FILETREE_END -->
+{END}
+'''
+
+old = README.read_text() if README.exists() else "# Agent Meauxbility Dashboard\n"
+pattern = re.compile(re.escape(START) + r".*?" + re.escape(END), re.S)
+
+if pattern.search(old):
+    new = pattern.sub(section.strip(), old)
+else:
+    new = old.rstrip() + "\n\n" + section.strip() + "\n"
+
+README.write_text(new)
+print(f"updated {README}")
