@@ -1,0 +1,3204 @@
+{
+  "captured_at": "2026-05-09T21:19:36.573309+00:00",
+  "database_name": "inneranimalmedia-business",
+  "table_count": 27,
+  "tables": {
+    "cms_3d_assets": {
+      "columns": [
+        {
+          "cid": 0,
+          "dflt_value": null,
+          "name": "id",
+          "notnull": 0,
+          "pk": 1,
+          "type": "TEXT"
+        },
+        {
+          "cid": 1,
+          "dflt_value": null,
+          "name": "asset_id",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 2,
+          "dflt_value": null,
+          "name": "tenant_id",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 3,
+          "dflt_value": null,
+          "name": "meshy_task_id",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 4,
+          "dflt_value": null,
+          "name": "model_type",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 5,
+          "dflt_value": null,
+          "name": "prompt",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 6,
+          "dflt_value": null,
+          "name": "source_image_url",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 7,
+          "dflt_value": "'pending'",
+          "name": "status",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 8,
+          "dflt_value": null,
+          "name": "glb_url",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 9,
+          "dflt_value": null,
+          "name": "thumbnail_url",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 10,
+          "dflt_value": null,
+          "name": "poly_count",
+          "notnull": 0,
+          "pk": 0,
+          "type": "INTEGER"
+        },
+        {
+          "cid": 11,
+          "dflt_value": null,
+          "name": "error_message",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 12,
+          "dflt_value": null,
+          "name": "created_at",
+          "notnull": 1,
+          "pk": 0,
+          "type": "INTEGER"
+        },
+        {
+          "cid": 13,
+          "dflt_value": null,
+          "name": "completed_at",
+          "notnull": 0,
+          "pk": 0,
+          "type": "INTEGER"
+        },
+        {
+          "cid": 14,
+          "dflt_value": null,
+          "name": "r2_key",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 15,
+          "dflt_value": null,
+          "name": "r2_bucket",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 16,
+          "dflt_value": null,
+          "name": "s3_endpoint",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        }
+      ],
+      "ddl": "CREATE TABLE cms_3d_assets (\n    id TEXT PRIMARY KEY,\n    asset_id TEXT NOT NULL,\n    tenant_id TEXT NOT NULL,\n    meshy_task_id TEXT,\n    model_type TEXT,\n    prompt TEXT,\n    source_image_url TEXT,\n    status TEXT DEFAULT 'pending',\n    glb_url TEXT,\n    thumbnail_url TEXT,\n    poly_count INTEGER,\n    error_message TEXT,\n    created_at INTEGER NOT NULL,\n    completed_at INTEGER, r2_key TEXT, r2_bucket TEXT, s3_endpoint TEXT,\n    FOREIGN KEY (asset_id) REFERENCES cms_assets(id) ON DELETE CASCADE,\n    FOREIGN KEY (tenant_id) REFERENCES cms_tenants(id) ON DELETE CASCADE\n)",
+      "elapsed_ms": 3807,
+      "row_count": 14
+    },
+    "cms_activity_log": {
+      "columns": [
+        {
+          "cid": 0,
+          "dflt_value": null,
+          "name": "id",
+          "notnull": 0,
+          "pk": 1,
+          "type": "TEXT"
+        },
+        {
+          "cid": 1,
+          "dflt_value": null,
+          "name": "tenant_id",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 2,
+          "dflt_value": null,
+          "name": "user_id",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 3,
+          "dflt_value": null,
+          "name": "action",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 4,
+          "dflt_value": null,
+          "name": "resource_type",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 5,
+          "dflt_value": null,
+          "name": "resource_id",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 6,
+          "dflt_value": null,
+          "name": "details",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 7,
+          "dflt_value": null,
+          "name": "ip_address",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 8,
+          "dflt_value": null,
+          "name": "user_agent",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 9,
+          "dflt_value": null,
+          "name": "created_at",
+          "notnull": 1,
+          "pk": 0,
+          "type": "INTEGER"
+        }
+      ],
+      "ddl": "CREATE TABLE cms_activity_log (\n    id TEXT PRIMARY KEY,\n    tenant_id TEXT NOT NULL,\n    user_id TEXT,\n    action TEXT NOT NULL,\n    resource_type TEXT NOT NULL,\n    resource_id TEXT NOT NULL,\n    details TEXT,\n    ip_address TEXT,\n    user_agent TEXT,\n    created_at INTEGER NOT NULL,\n    FOREIGN KEY (tenant_id) REFERENCES cms_tenants(id) ON DELETE CASCADE\n)",
+      "elapsed_ms": 3937,
+      "row_count": 1
+    },
+    "cms_assets": {
+      "columns": [
+        {
+          "cid": 0,
+          "dflt_value": null,
+          "name": "id",
+          "notnull": 0,
+          "pk": 1,
+          "type": "TEXT"
+        },
+        {
+          "cid": 1,
+          "dflt_value": null,
+          "name": "tenant_id",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 2,
+          "dflt_value": null,
+          "name": "filename",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 3,
+          "dflt_value": null,
+          "name": "original_filename",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 4,
+          "dflt_value": null,
+          "name": "path",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 5,
+          "dflt_value": null,
+          "name": "size",
+          "notnull": 1,
+          "pk": 0,
+          "type": "INTEGER"
+        },
+        {
+          "cid": 6,
+          "dflt_value": null,
+          "name": "mime_type",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 7,
+          "dflt_value": null,
+          "name": "category",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 8,
+          "dflt_value": null,
+          "name": "tags",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 9,
+          "dflt_value": null,
+          "name": "cloudflare_image_id",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 10,
+          "dflt_value": null,
+          "name": "r2_key",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 11,
+          "dflt_value": null,
+          "name": "public_url",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 12,
+          "dflt_value": null,
+          "name": "thumbnail_url",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 13,
+          "dflt_value": null,
+          "name": "metadata",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 14,
+          "dflt_value": null,
+          "name": "created_by",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 15,
+          "dflt_value": "CURRENT_TIMESTAMP",
+          "name": "created_at",
+          "notnull": 0,
+          "pk": 0,
+          "type": "DATETIME"
+        },
+        {
+          "cid": 16,
+          "dflt_value": "CURRENT_TIMESTAMP",
+          "name": "updated_at",
+          "notnull": 0,
+          "pk": 0,
+          "type": "DATETIME"
+        },
+        {
+          "cid": 17,
+          "dflt_value": "0",
+          "name": "is_live",
+          "notnull": 1,
+          "pk": 0,
+          "type": "INTEGER"
+        },
+        {
+          "cid": 18,
+          "dflt_value": null,
+          "name": "notes",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 19,
+          "dflt_value": null,
+          "name": "builds",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 20,
+          "dflt_value": null,
+          "name": "preferred_bg",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 21,
+          "dflt_value": null,
+          "name": "r2_bucket",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 22,
+          "dflt_value": null,
+          "name": "s3_endpoint",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        }
+      ],
+      "ddl": "CREATE TABLE cms_assets (\n    id TEXT PRIMARY KEY,\n    tenant_id TEXT NOT NULL,\n    filename TEXT NOT NULL,\n    original_filename TEXT NOT NULL,\n    path TEXT NOT NULL,\n    size INTEGER NOT NULL,\n    mime_type TEXT NOT NULL,\n    category TEXT NOT NULL,\n    tags TEXT,\n    cloudflare_image_id TEXT,\n    r2_key TEXT NOT NULL,\n    public_url TEXT NOT NULL,\n    thumbnail_url TEXT,\n    metadata TEXT,\n    created_by TEXT,\n    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,\n    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP, is_live INTEGER NOT NULL DEFAULT 0, notes TEXT, builds TEXT, preferred_bg TEXT, r2_bucket TEXT, s3_endpoint TEXT,\n    FOREIGN KEY (tenant_id) REFERENCES cms_tenants(id)\n)",
+      "elapsed_ms": 4020,
+      "row_count": 100
+    },
+    "cms_collection_assets": {
+      "columns": [
+        {
+          "cid": 0,
+          "dflt_value": null,
+          "name": "collection_id",
+          "notnull": 1,
+          "pk": 1,
+          "type": "TEXT"
+        },
+        {
+          "cid": 1,
+          "dflt_value": null,
+          "name": "asset_id",
+          "notnull": 1,
+          "pk": 2,
+          "type": "TEXT"
+        },
+        {
+          "cid": 2,
+          "dflt_value": "0",
+          "name": "order_index",
+          "notnull": 0,
+          "pk": 0,
+          "type": "INTEGER"
+        },
+        {
+          "cid": 3,
+          "dflt_value": null,
+          "name": "added_at",
+          "notnull": 1,
+          "pk": 0,
+          "type": "INTEGER"
+        }
+      ],
+      "ddl": "CREATE TABLE cms_collection_assets (\n    collection_id TEXT NOT NULL,\n    asset_id TEXT NOT NULL,\n    order_index INTEGER DEFAULT 0,\n    added_at INTEGER NOT NULL,\n    PRIMARY KEY (collection_id, asset_id),\n    FOREIGN KEY (collection_id) REFERENCES cms_collections(id) ON DELETE CASCADE,\n    FOREIGN KEY (asset_id) REFERENCES cms_assets(id) ON DELETE CASCADE\n)",
+      "elapsed_ms": 4854,
+      "row_count": 0
+    },
+    "cms_collections": {
+      "columns": [
+        {
+          "cid": 0,
+          "dflt_value": null,
+          "name": "id",
+          "notnull": 0,
+          "pk": 1,
+          "type": "TEXT"
+        },
+        {
+          "cid": 1,
+          "dflt_value": null,
+          "name": "tenant_id",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 2,
+          "dflt_value": null,
+          "name": "name",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 3,
+          "dflt_value": null,
+          "name": "description",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 4,
+          "dflt_value": null,
+          "name": "thumbnail_url",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 5,
+          "dflt_value": "0",
+          "name": "is_public",
+          "notnull": 0,
+          "pk": 0,
+          "type": "INTEGER"
+        },
+        {
+          "cid": 6,
+          "dflt_value": null,
+          "name": "created_by",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 7,
+          "dflt_value": null,
+          "name": "created_at",
+          "notnull": 1,
+          "pk": 0,
+          "type": "INTEGER"
+        },
+        {
+          "cid": 8,
+          "dflt_value": null,
+          "name": "updated_at",
+          "notnull": 1,
+          "pk": 0,
+          "type": "INTEGER"
+        }
+      ],
+      "ddl": "CREATE TABLE cms_collections (\n    id TEXT PRIMARY KEY,\n    tenant_id TEXT NOT NULL,\n    name TEXT NOT NULL,\n    description TEXT,\n    thumbnail_url TEXT,\n    is_public INTEGER DEFAULT 0,\n    created_by TEXT,\n    created_at INTEGER NOT NULL,\n    updated_at INTEGER NOT NULL,\n    FOREIGN KEY (tenant_id) REFERENCES cms_tenants(id) ON DELETE CASCADE\n)",
+      "elapsed_ms": 3698,
+      "row_count": 5
+    },
+    "cms_component_templates": {
+      "columns": [
+        {
+          "cid": 0,
+          "dflt_value": "lower(hex(randomblob(16)))",
+          "name": "id",
+          "notnull": 0,
+          "pk": 1,
+          "type": "TEXT"
+        },
+        {
+          "cid": 1,
+          "dflt_value": null,
+          "name": "template_name",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 2,
+          "dflt_value": null,
+          "name": "template_type",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 3,
+          "dflt_value": null,
+          "name": "category",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 4,
+          "dflt_value": null,
+          "name": "preview_image_url",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 5,
+          "dflt_value": null,
+          "name": "template_data",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 6,
+          "dflt_value": "1",
+          "name": "is_system",
+          "notnull": 0,
+          "pk": 0,
+          "type": "INTEGER"
+        },
+        {
+          "cid": 7,
+          "dflt_value": "datetime('now')",
+          "name": "created_at",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 8,
+          "dflt_value": "datetime('now')",
+          "name": "updated_at",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 9,
+          "dflt_value": null,
+          "name": "r2_bucket",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 10,
+          "dflt_value": null,
+          "name": "r2_key",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 11,
+          "dflt_value": null,
+          "name": "s3_endpoint",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 12,
+          "dflt_value": null,
+          "name": "tenant_id",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 13,
+          "dflt_value": "NULL",
+          "name": "source_liquid_file",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 14,
+          "dflt_value": "NULL",
+          "name": "shopify_section_key",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 15,
+          "dflt_value": null,
+          "name": "liquid_import_id",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        }
+      ],
+      "ddl": "CREATE TABLE cms_component_templates (\n  id TEXT PRIMARY KEY DEFAULT (lower(hex(randomblob(16)))),\n  template_name TEXT NOT NULL,\n  template_type TEXT NOT NULL, \n  category TEXT NOT NULL, \n  preview_image_url TEXT,\n  template_data TEXT NOT NULL, \n  is_system INTEGER DEFAULT 1, \n  created_at TEXT DEFAULT (datetime('now')),\n  updated_at TEXT DEFAULT (datetime('now'))\n, r2_bucket TEXT, r2_key TEXT, s3_endpoint TEXT, tenant_id TEXT, source_liquid_file TEXT DEFAULT NULL, shopify_section_key TEXT DEFAULT NULL, liquid_import_id TEXT REFERENCES cms_liquid_imports(id) ON DELETE SET NULL)",
+      "elapsed_ms": 3909,
+      "row_count": 24
+    },
+    "cms_content": {
+      "columns": [
+        {
+          "cid": 0,
+          "dflt_value": null,
+          "name": "key",
+          "notnull": 0,
+          "pk": 1,
+          "type": "TEXT"
+        },
+        {
+          "cid": 1,
+          "dflt_value": "''",
+          "name": "value",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 2,
+          "dflt_value": "datetime('now')",
+          "name": "updated_at",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        }
+      ],
+      "ddl": "CREATE TABLE cms_content (\n  key TEXT PRIMARY KEY,\n  value TEXT NOT NULL DEFAULT '',\n  updated_at TEXT NOT NULL DEFAULT (datetime('now'))\n)",
+      "elapsed_ms": 3779,
+      "row_count": 4
+    },
+    "cms_conversion_jobs": {
+      "columns": [
+        {
+          "cid": 0,
+          "dflt_value": null,
+          "name": "id",
+          "notnull": 0,
+          "pk": 1,
+          "type": "TEXT"
+        },
+        {
+          "cid": 1,
+          "dflt_value": null,
+          "name": "tenant_id",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 2,
+          "dflt_value": null,
+          "name": "asset_id",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 3,
+          "dflt_value": null,
+          "name": "service",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 4,
+          "dflt_value": "'pending'",
+          "name": "status",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 5,
+          "dflt_value": null,
+          "name": "input_format",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 6,
+          "dflt_value": null,
+          "name": "output_format",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 7,
+          "dflt_value": null,
+          "name": "job_id",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 8,
+          "dflt_value": null,
+          "name": "result_url",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 9,
+          "dflt_value": null,
+          "name": "error",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 10,
+          "dflt_value": "CURRENT_TIMESTAMP",
+          "name": "created_at",
+          "notnull": 0,
+          "pk": 0,
+          "type": "DATETIME"
+        },
+        {
+          "cid": 11,
+          "dflt_value": null,
+          "name": "completed_at",
+          "notnull": 0,
+          "pk": 0,
+          "type": "DATETIME"
+        }
+      ],
+      "ddl": "CREATE TABLE cms_conversion_jobs (\n    id TEXT PRIMARY KEY,\n    tenant_id TEXT NOT NULL,\n    asset_id TEXT NOT NULL,\n    service TEXT NOT NULL,\n    status TEXT DEFAULT 'pending',\n    input_format TEXT NOT NULL,\n    output_format TEXT NOT NULL,\n    job_id TEXT,\n    result_url TEXT,\n    error TEXT,\n    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,\n    completed_at DATETIME,\n    FOREIGN KEY (tenant_id) REFERENCES cms_tenants(id),\n    FOREIGN KEY (asset_id) REFERENCES cms_assets(id)\n)",
+      "elapsed_ms": 4027,
+      "row_count": 0
+    },
+    "cms_conversions": {
+      "columns": [
+        {
+          "cid": 0,
+          "dflt_value": null,
+          "name": "id",
+          "notnull": 0,
+          "pk": 1,
+          "type": "TEXT"
+        },
+        {
+          "cid": 1,
+          "dflt_value": null,
+          "name": "asset_id",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 2,
+          "dflt_value": null,
+          "name": "tenant_id",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 3,
+          "dflt_value": null,
+          "name": "source_format",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 4,
+          "dflt_value": null,
+          "name": "target_format",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 5,
+          "dflt_value": "'pending'",
+          "name": "status",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 6,
+          "dflt_value": null,
+          "name": "cloudconvert_job_id",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 7,
+          "dflt_value": null,
+          "name": "output_asset_id",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 8,
+          "dflt_value": null,
+          "name": "output_url",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 9,
+          "dflt_value": null,
+          "name": "error_message",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 10,
+          "dflt_value": null,
+          "name": "started_at",
+          "notnull": 0,
+          "pk": 0,
+          "type": "INTEGER"
+        },
+        {
+          "cid": 11,
+          "dflt_value": null,
+          "name": "completed_at",
+          "notnull": 0,
+          "pk": 0,
+          "type": "INTEGER"
+        },
+        {
+          "cid": 12,
+          "dflt_value": null,
+          "name": "created_at",
+          "notnull": 1,
+          "pk": 0,
+          "type": "INTEGER"
+        }
+      ],
+      "ddl": "CREATE TABLE cms_conversions (\n    id TEXT PRIMARY KEY,\n    asset_id TEXT NOT NULL,\n    tenant_id TEXT NOT NULL,\n    source_format TEXT NOT NULL,\n    target_format TEXT NOT NULL,\n    status TEXT DEFAULT 'pending',\n    cloudconvert_job_id TEXT,\n    output_asset_id TEXT,\n    output_url TEXT,\n    error_message TEXT,\n    started_at INTEGER,\n    completed_at INTEGER,\n    created_at INTEGER NOT NULL,\n    FOREIGN KEY (asset_id) REFERENCES cms_assets(id) ON DELETE CASCADE,\n    FOREIGN KEY (tenant_id) REFERENCES cms_tenants(id) ON DELETE CASCADE\n)",
+      "elapsed_ms": 4017,
+      "row_count": 0
+    },
+    "cms_folders": {
+      "columns": [
+        {
+          "cid": 0,
+          "dflt_value": null,
+          "name": "id",
+          "notnull": 0,
+          "pk": 1,
+          "type": "TEXT"
+        },
+        {
+          "cid": 1,
+          "dflt_value": null,
+          "name": "tenant_id",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 2,
+          "dflt_value": null,
+          "name": "name",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 3,
+          "dflt_value": null,
+          "name": "parent_id",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 4,
+          "dflt_value": null,
+          "name": "path",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 5,
+          "dflt_value": null,
+          "name": "created_at",
+          "notnull": 1,
+          "pk": 0,
+          "type": "INTEGER"
+        },
+        {
+          "cid": 6,
+          "dflt_value": null,
+          "name": "updated_at",
+          "notnull": 1,
+          "pk": 0,
+          "type": "INTEGER"
+        }
+      ],
+      "ddl": "CREATE TABLE cms_folders (\n    id TEXT PRIMARY KEY,\n    tenant_id TEXT NOT NULL,\n    name TEXT NOT NULL,\n    parent_id TEXT,\n    path TEXT NOT NULL,\n    created_at INTEGER NOT NULL,\n    updated_at INTEGER NOT NULL,\n    FOREIGN KEY (tenant_id) REFERENCES cms_tenants(id) ON DELETE CASCADE,\n    FOREIGN KEY (parent_id) REFERENCES cms_folders(id) ON DELETE CASCADE\n)",
+      "elapsed_ms": 4158,
+      "row_count": 6
+    },
+    "cms_global_settings": {
+      "columns": [
+        {
+          "cid": 0,
+          "dflt_value": "lower(hex(randomblob(16)))",
+          "name": "id",
+          "notnull": 0,
+          "pk": 1,
+          "type": "TEXT"
+        },
+        {
+          "cid": 1,
+          "dflt_value": null,
+          "name": "project_id",
+          "notnull": 1,
+          "pk": 0,
+          "type": "INTEGER"
+        },
+        {
+          "cid": 2,
+          "dflt_value": null,
+          "name": "site_name",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 3,
+          "dflt_value": null,
+          "name": "site_logo_url",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 4,
+          "dflt_value": null,
+          "name": "site_favicon_url",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 5,
+          "dflt_value": null,
+          "name": "contact_email",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 6,
+          "dflt_value": null,
+          "name": "contact_phone",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 7,
+          "dflt_value": null,
+          "name": "social_links",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 8,
+          "dflt_value": null,
+          "name": "footer_text",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 9,
+          "dflt_value": null,
+          "name": "header_announcement",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 10,
+          "dflt_value": null,
+          "name": "seo_defaults",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 11,
+          "dflt_value": null,
+          "name": "scripts_head",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 12,
+          "dflt_value": null,
+          "name": "scripts_body",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 13,
+          "dflt_value": null,
+          "name": "analytics_id",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 14,
+          "dflt_value": null,
+          "name": "settings_json",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 15,
+          "dflt_value": "datetime('now')",
+          "name": "created_at",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 16,
+          "dflt_value": "datetime('now')",
+          "name": "updated_at",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        }
+      ],
+      "ddl": "CREATE TABLE cms_global_settings (\n  id TEXT PRIMARY KEY DEFAULT (lower(hex(randomblob(16)))),\n  project_id INTEGER NOT NULL UNIQUE,\n  site_name TEXT,\n  site_logo_url TEXT,\n  site_favicon_url TEXT,\n  contact_email TEXT,\n  contact_phone TEXT,\n  social_links TEXT, \n  footer_text TEXT,\n  header_announcement TEXT,\n  seo_defaults TEXT, \n  scripts_head TEXT, \n  scripts_body TEXT, \n  analytics_id TEXT,\n  settings_json TEXT, \n  created_at TEXT DEFAULT (datetime('now')),\n  updated_at TEXT DEFAULT (datetime('now'))\n)",
+      "elapsed_ms": 5250,
+      "row_count": 5
+    },
+    "cms_liquid_imports": {
+      "columns": [
+        {
+          "cid": 0,
+          "dflt_value": "'liq_' || lower(hex(randomblob(8)))",
+          "name": "id",
+          "notnull": 0,
+          "pk": 1,
+          "type": "TEXT"
+        },
+        {
+          "cid": 1,
+          "dflt_value": null,
+          "name": "tenant_id",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 2,
+          "dflt_value": null,
+          "name": "workspace_id",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 3,
+          "dflt_value": null,
+          "name": "source_type",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 4,
+          "dflt_value": null,
+          "name": "source_path",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 5,
+          "dflt_value": null,
+          "name": "theme_name",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 6,
+          "dflt_value": "'pending'",
+          "name": "status",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 7,
+          "dflt_value": "0",
+          "name": "sections_found",
+          "notnull": 0,
+          "pk": 0,
+          "type": "INTEGER"
+        },
+        {
+          "cid": 8,
+          "dflt_value": "0",
+          "name": "snippets_found",
+          "notnull": 0,
+          "pk": 0,
+          "type": "INTEGER"
+        },
+        {
+          "cid": 9,
+          "dflt_value": "0",
+          "name": "templates_found",
+          "notnull": 0,
+          "pk": 0,
+          "type": "INTEGER"
+        },
+        {
+          "cid": 10,
+          "dflt_value": "0",
+          "name": "sections_mapped",
+          "notnull": 0,
+          "pk": 0,
+          "type": "INTEGER"
+        },
+        {
+          "cid": 11,
+          "dflt_value": "0",
+          "name": "pages_created",
+          "notnull": 0,
+          "pk": 0,
+          "type": "INTEGER"
+        },
+        {
+          "cid": 12,
+          "dflt_value": null,
+          "name": "error_log",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 13,
+          "dflt_value": null,
+          "name": "workflow_run_id",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 14,
+          "dflt_value": "unixepoch()",
+          "name": "started_at",
+          "notnull": 0,
+          "pk": 0,
+          "type": "INTEGER"
+        },
+        {
+          "cid": 15,
+          "dflt_value": null,
+          "name": "completed_at",
+          "notnull": 0,
+          "pk": 0,
+          "type": "INTEGER"
+        },
+        {
+          "cid": 16,
+          "dflt_value": "unixepoch()",
+          "name": "created_at",
+          "notnull": 0,
+          "pk": 0,
+          "type": "INTEGER"
+        }
+      ],
+      "ddl": "CREATE TABLE cms_liquid_imports (\n  id                TEXT PRIMARY KEY DEFAULT ('liq_' || lower(hex(randomblob(8)))),\n  tenant_id         TEXT NOT NULL,\n  workspace_id      TEXT,\n  source_type       TEXT NOT NULL CHECK(source_type IN ('local','shopify_api','r2','zip')),\n  source_path       TEXT NOT NULL,\n  theme_name        TEXT,\n  status            TEXT NOT NULL DEFAULT 'pending'\n                    CHECK(status IN ('pending','extracting','parsing','mapping','registering','validating','complete','failed')),\n  sections_found    INTEGER DEFAULT 0,\n  snippets_found    INTEGER DEFAULT 0,\n  templates_found   INTEGER DEFAULT 0,\n  sections_mapped   INTEGER DEFAULT 0,\n  pages_created     INTEGER DEFAULT 0,\n  error_log         TEXT,\n  workflow_run_id   TEXT REFERENCES agentsam_workflow_runs(id) ON DELETE SET NULL,\n  started_at        INTEGER DEFAULT (unixepoch()),\n  completed_at      INTEGER,\n  created_at        INTEGER DEFAULT (unixepoch())\n)",
+      "elapsed_ms": 4409,
+      "row_count": 0
+    },
+    "cms_liquid_sections": {
+      "columns": [
+        {
+          "cid": 0,
+          "dflt_value": "'lsec_' || lower(hex(randomblob(8)))",
+          "name": "id",
+          "notnull": 0,
+          "pk": 1,
+          "type": "TEXT"
+        },
+        {
+          "cid": 1,
+          "dflt_value": null,
+          "name": "import_id",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 2,
+          "dflt_value": null,
+          "name": "tenant_id",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 3,
+          "dflt_value": null,
+          "name": "file_name",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 4,
+          "dflt_value": null,
+          "name": "section_key",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 5,
+          "dflt_value": null,
+          "name": "section_type",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 6,
+          "dflt_value": null,
+          "name": "liquid_source",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 7,
+          "dflt_value": "'{}'",
+          "name": "schema_json",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 8,
+          "dflt_value": "'{}'",
+          "name": "settings_map_json",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 9,
+          "dflt_value": "'[]'",
+          "name": "render_deps",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 10,
+          "dflt_value": null,
+          "name": "mapped_template_id",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 11,
+          "dflt_value": null,
+          "name": "mapped_section_id",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 12,
+          "dflt_value": "'pending'",
+          "name": "parse_status",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 13,
+          "dflt_value": null,
+          "name": "parse_error",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 14,
+          "dflt_value": "unixepoch()",
+          "name": "created_at",
+          "notnull": 0,
+          "pk": 0,
+          "type": "INTEGER"
+        }
+      ],
+      "ddl": "CREATE TABLE cms_liquid_sections (\n  id                  TEXT PRIMARY KEY DEFAULT ('lsec_' || lower(hex(randomblob(8)))),\n  import_id           TEXT NOT NULL REFERENCES cms_liquid_imports(id) ON DELETE CASCADE,\n  tenant_id           TEXT NOT NULL,\n  file_name           TEXT NOT NULL,\n  section_key         TEXT NOT NULL,\n  section_type        TEXT,\n  liquid_source       TEXT,\n  schema_json         TEXT DEFAULT '{}',\n  settings_map_json   TEXT DEFAULT '{}',\n  render_deps         TEXT DEFAULT '[]',\n  mapped_template_id  TEXT REFERENCES cms_component_templates(id) ON DELETE SET NULL,\n  mapped_section_id   TEXT REFERENCES cms_page_sections(id) ON DELETE SET NULL,\n  parse_status        TEXT NOT NULL DEFAULT 'pending'\n                      CHECK(parse_status IN ('pending','parsed','mapped','registered','failed')),\n  parse_error         TEXT,\n  created_at          INTEGER DEFAULT (unixepoch())\n)",
+      "elapsed_ms": 4543,
+      "row_count": 0
+    },
+    "cms_live_edit_sessions": {
+      "columns": [
+        {
+          "cid": 0,
+          "dflt_value": "lower(hex(randomblob(16)))",
+          "name": "id",
+          "notnull": 0,
+          "pk": 1,
+          "type": "TEXT"
+        },
+        {
+          "cid": 1,
+          "dflt_value": null,
+          "name": "page_id",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 2,
+          "dflt_value": null,
+          "name": "user_id",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 3,
+          "dflt_value": null,
+          "name": "session_token",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 4,
+          "dflt_value": "1",
+          "name": "is_active",
+          "notnull": 0,
+          "pk": 0,
+          "type": "INTEGER"
+        },
+        {
+          "cid": 5,
+          "dflt_value": "datetime('now')",
+          "name": "last_activity",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 6,
+          "dflt_value": "datetime('now')",
+          "name": "created_at",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        }
+      ],
+      "ddl": "CREATE TABLE cms_live_edit_sessions (\n  id TEXT PRIMARY KEY DEFAULT (lower(hex(randomblob(16)))),\n  page_id TEXT NOT NULL,\n  user_id TEXT NOT NULL,\n  session_token TEXT NOT NULL UNIQUE,\n  is_active INTEGER DEFAULT 1,\n  last_activity TEXT DEFAULT (datetime('now')),\n  created_at TEXT DEFAULT (datetime('now')),\n  FOREIGN KEY (page_id) REFERENCES cms_site_pages(id) ON DELETE CASCADE\n)",
+      "elapsed_ms": 4955,
+      "row_count": 0
+    },
+    "cms_live_rollbacks": {
+      "columns": [
+        {
+          "cid": 0,
+          "dflt_value": null,
+          "name": "id",
+          "notnull": 0,
+          "pk": 1,
+          "type": "TEXT"
+        },
+        {
+          "cid": 1,
+          "dflt_value": null,
+          "name": "page_id",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 2,
+          "dflt_value": null,
+          "name": "project_id",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 3,
+          "dflt_value": null,
+          "name": "slug",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 4,
+          "dflt_value": null,
+          "name": "previous_html",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 5,
+          "dflt_value": null,
+          "name": "previous_r2_key",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 6,
+          "dflt_value": null,
+          "name": "deployed_html_hash",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 7,
+          "dflt_value": null,
+          "name": "created_at",
+          "notnull": 1,
+          "pk": 0,
+          "type": "INTEGER"
+        }
+      ],
+      "ddl": "CREATE TABLE cms_live_rollbacks (\n  id TEXT PRIMARY KEY,\n  page_id TEXT NOT NULL,\n  project_id TEXT NOT NULL,\n  slug TEXT NOT NULL,\n  previous_html TEXT,\n  previous_r2_key TEXT,\n  deployed_html_hash TEXT,\n  created_at INTEGER NOT NULL,\n  FOREIGN KEY (page_id) REFERENCES \"cms_pages_backup_20260428\"(id)\n)",
+      "elapsed_ms": 4247,
+      "row_count": 0
+    },
+    "cms_navigation_menus": {
+      "columns": [
+        {
+          "cid": 0,
+          "dflt_value": "lower(hex(randomblob(16)))",
+          "name": "id",
+          "notnull": 0,
+          "pk": 1,
+          "type": "TEXT"
+        },
+        {
+          "cid": 1,
+          "dflt_value": null,
+          "name": "project_id",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 2,
+          "dflt_value": null,
+          "name": "project_slug",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 3,
+          "dflt_value": null,
+          "name": "tenant_id",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 4,
+          "dflt_value": null,
+          "name": "menu_name",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 5,
+          "dflt_value": "'site'",
+          "name": "menu_type",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 6,
+          "dflt_value": null,
+          "name": "menu_items",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 7,
+          "dflt_value": "1",
+          "name": "is_active",
+          "notnull": 0,
+          "pk": 0,
+          "type": "INTEGER"
+        },
+        {
+          "cid": 8,
+          "dflt_value": null,
+          "name": "r2_bucket",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 9,
+          "dflt_value": null,
+          "name": "r2_key",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 10,
+          "dflt_value": null,
+          "name": "r2_url",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 11,
+          "dflt_value": null,
+          "name": "s3_endpoint",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 12,
+          "dflt_value": "datetime('now')",
+          "name": "created_at",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 13,
+          "dflt_value": "datetime('now')",
+          "name": "updated_at",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        }
+      ],
+      "ddl": "CREATE TABLE cms_navigation_menus (\n  id TEXT PRIMARY KEY DEFAULT (lower(hex(randomblob(16)))),\n\n  project_id TEXT NOT NULL,\n  project_slug TEXT,\n  tenant_id TEXT,\n\n  menu_name TEXT NOT NULL,\n  menu_type TEXT DEFAULT 'site',\n  menu_items TEXT NOT NULL,\n\n  is_active INTEGER DEFAULT 1,\n\n  r2_bucket TEXT,\n  r2_key TEXT,\n  r2_url TEXT,\n  s3_endpoint TEXT,\n\n  created_at TEXT DEFAULT (datetime('now')),\n  updated_at TEXT DEFAULT (datetime('now')),\n\n  UNIQUE(project_id, menu_name)\n)",
+      "elapsed_ms": 3916,
+      "row_count": 3
+    },
+    "cms_override_versions": {
+      "columns": [
+        {
+          "cid": 0,
+          "dflt_value": "lower(hex(randomblob(8)))",
+          "name": "id",
+          "notnull": 0,
+          "pk": 1,
+          "type": "TEXT"
+        },
+        {
+          "cid": 1,
+          "dflt_value": null,
+          "name": "override_id",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 2,
+          "dflt_value": null,
+          "name": "project_id",
+          "notnull": 1,
+          "pk": 0,
+          "type": "INTEGER"
+        },
+        {
+          "cid": 3,
+          "dflt_value": null,
+          "name": "project_slug",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 4,
+          "dflt_value": null,
+          "name": "path",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 5,
+          "dflt_value": null,
+          "name": "section",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 6,
+          "dflt_value": null,
+          "name": "overrides_json",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 7,
+          "dflt_value": null,
+          "name": "version",
+          "notnull": 1,
+          "pk": 0,
+          "type": "INTEGER"
+        },
+        {
+          "cid": 8,
+          "dflt_value": null,
+          "name": "status",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 9,
+          "dflt_value": "'user-sam-primeaux'",
+          "name": "created_by",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 10,
+          "dflt_value": "datetime('now')",
+          "name": "created_at",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        }
+      ],
+      "ddl": "CREATE TABLE cms_override_versions (\n  id TEXT PRIMARY KEY DEFAULT (lower(hex(randomblob(8)))),\n  override_id TEXT NOT NULL,             \n  project_id INTEGER NOT NULL,\n  project_slug TEXT NOT NULL,\n  path TEXT NOT NULL,\n  section TEXT NOT NULL,\n  overrides_json TEXT NOT NULL,\n  version INTEGER NOT NULL,\n  status TEXT NOT NULL,\n  created_by TEXT DEFAULT 'user-sam-primeaux',\n  created_at TEXT NOT NULL DEFAULT (datetime('now')),\n  FOREIGN KEY (override_id) REFERENCES cms_page_overrides(id) ON DELETE CASCADE\n)",
+      "elapsed_ms": 3828,
+      "row_count": 0
+    },
+    "cms_page_drafts": {
+      "columns": [
+        {
+          "cid": 0,
+          "dflt_value": "lower(hex(randomblob(16)))",
+          "name": "id",
+          "notnull": 0,
+          "pk": 1,
+          "type": "TEXT"
+        },
+        {
+          "cid": 1,
+          "dflt_value": null,
+          "name": "page_id",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 2,
+          "dflt_value": null,
+          "name": "user_id",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 3,
+          "dflt_value": null,
+          "name": "draft_data",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 4,
+          "dflt_value": "datetime('now')",
+          "name": "created_at",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 5,
+          "dflt_value": "datetime('now')",
+          "name": "updated_at",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        }
+      ],
+      "ddl": "CREATE TABLE cms_page_drafts (\n  id TEXT PRIMARY KEY DEFAULT (lower(hex(randomblob(16)))),\n  page_id TEXT NOT NULL,\n  user_id TEXT NOT NULL,\n  draft_data TEXT NOT NULL, \n  created_at TEXT DEFAULT (datetime('now')),\n  updated_at TEXT DEFAULT (datetime('now')),\n  UNIQUE(page_id, user_id)\n)",
+      "elapsed_ms": 4016,
+      "row_count": 0
+    },
+    "cms_page_overrides": {
+      "columns": [
+        {
+          "cid": 0,
+          "dflt_value": "lower(hex(randomblob(8)))",
+          "name": "id",
+          "notnull": 0,
+          "pk": 1,
+          "type": "TEXT"
+        },
+        {
+          "cid": 1,
+          "dflt_value": null,
+          "name": "project_id",
+          "notnull": 1,
+          "pk": 0,
+          "type": "INTEGER"
+        },
+        {
+          "cid": 2,
+          "dflt_value": null,
+          "name": "project_slug",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 3,
+          "dflt_value": null,
+          "name": "path",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 4,
+          "dflt_value": "'hero'",
+          "name": "section",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 5,
+          "dflt_value": "'{}'",
+          "name": "overrides_json",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 6,
+          "dflt_value": "'draft'",
+          "name": "status",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 7,
+          "dflt_value": "1",
+          "name": "version",
+          "notnull": 1,
+          "pk": 0,
+          "type": "INTEGER"
+        },
+        {
+          "cid": 8,
+          "dflt_value": null,
+          "name": "published_at",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 9,
+          "dflt_value": null,
+          "name": "published_by",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 10,
+          "dflt_value": "'user-sam-primeaux'",
+          "name": "created_by",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 11,
+          "dflt_value": "datetime('now')",
+          "name": "created_at",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 12,
+          "dflt_value": "datetime('now')",
+          "name": "updated_at",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        }
+      ],
+      "ddl": "CREATE TABLE cms_page_overrides (\n  id TEXT PRIMARY KEY DEFAULT (lower(hex(randomblob(8)))),\n  project_id INTEGER NOT NULL,           \n  project_slug TEXT NOT NULL,            \n  path TEXT NOT NULL,                    \n  section TEXT NOT NULL DEFAULT 'hero',  \n  overrides_json TEXT NOT NULL DEFAULT '{}',\n  status TEXT NOT NULL DEFAULT 'draft'\n    CHECK (status IN ('draft','published','archived')),\n  version INTEGER NOT NULL DEFAULT 1,\n  published_at TEXT,\n  published_by TEXT,\n  created_by TEXT DEFAULT 'user-sam-primeaux',\n  created_at TEXT NOT NULL DEFAULT (datetime('now')),\n  updated_at TEXT NOT NULL DEFAULT (datetime('now')),\n  UNIQUE(project_id, path, section)\n)",
+      "elapsed_ms": 3673,
+      "row_count": 0
+    },
+    "cms_page_sections": {
+      "columns": [
+        {
+          "cid": 0,
+          "dflt_value": null,
+          "name": "id",
+          "notnull": 0,
+          "pk": 1,
+          "type": "TEXT"
+        },
+        {
+          "cid": 1,
+          "dflt_value": null,
+          "name": "page_id",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 2,
+          "dflt_value": null,
+          "name": "section_type",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 3,
+          "dflt_value": null,
+          "name": "section_name",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 4,
+          "dflt_value": "'{}'",
+          "name": "section_data",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 5,
+          "dflt_value": "0",
+          "name": "sort_order",
+          "notnull": 0,
+          "pk": 0,
+          "type": "INTEGER"
+        },
+        {
+          "cid": 6,
+          "dflt_value": "1",
+          "name": "is_visible",
+          "notnull": 0,
+          "pk": 0,
+          "type": "INTEGER"
+        },
+        {
+          "cid": 7,
+          "dflt_value": null,
+          "name": "css_classes",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 8,
+          "dflt_value": null,
+          "name": "custom_css",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 9,
+          "dflt_value": "datetime('now')",
+          "name": "created_at",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 10,
+          "dflt_value": "datetime('now')",
+          "name": "updated_at",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 11,
+          "dflt_value": null,
+          "name": "liquid_section_id",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 12,
+          "dflt_value": "NULL",
+          "name": "shopify_section_key",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        }
+      ],
+      "ddl": "CREATE TABLE cms_page_sections (\n  id TEXT PRIMARY KEY,\n  page_id TEXT NOT NULL,\n  section_type TEXT NOT NULL,\n  section_name TEXT NOT NULL,\n  section_data TEXT NOT NULL DEFAULT '{}',\n  sort_order INTEGER DEFAULT 0,\n  is_visible INTEGER DEFAULT 1,\n  css_classes TEXT,\n  custom_css TEXT,\n  created_at TEXT DEFAULT (datetime('now')),\n  updated_at TEXT DEFAULT (datetime('now')), liquid_section_id TEXT REFERENCES cms_liquid_sections(id) ON DELETE SET NULL, shopify_section_key TEXT DEFAULT NULL,\n  FOREIGN KEY (page_id)\n    REFERENCES cms_pages(id)\n    ON DELETE CASCADE\n)",
+      "elapsed_ms": 3628,
+      "row_count": 46
+    },
+    "cms_pages": {
+      "columns": [
+        {
+          "cid": 0,
+          "dflt_value": null,
+          "name": "id",
+          "notnull": 0,
+          "pk": 1,
+          "type": "TEXT"
+        },
+        {
+          "cid": 1,
+          "dflt_value": null,
+          "name": "project_id",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 2,
+          "dflt_value": null,
+          "name": "project_slug",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 3,
+          "dflt_value": null,
+          "name": "tenant_id",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 4,
+          "dflt_value": null,
+          "name": "workspace_id",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 5,
+          "dflt_value": null,
+          "name": "worker_id",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 6,
+          "dflt_value": null,
+          "name": "person_uuid",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 7,
+          "dflt_value": null,
+          "name": "slug",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 8,
+          "dflt_value": null,
+          "name": "path",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 9,
+          "dflt_value": null,
+          "name": "route_path",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 10,
+          "dflt_value": null,
+          "name": "page_type",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 11,
+          "dflt_value": null,
+          "name": "title",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 12,
+          "dflt_value": null,
+          "name": "meta_description",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 13,
+          "dflt_value": null,
+          "name": "description",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 14,
+          "dflt_value": "'draft'",
+          "name": "status",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 15,
+          "dflt_value": null,
+          "name": "seo_title",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 16,
+          "dflt_value": null,
+          "name": "canonical_url",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 17,
+          "dflt_value": "'index,follow'",
+          "name": "robots",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 18,
+          "dflt_value": null,
+          "name": "og_image_asset_id",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 19,
+          "dflt_value": null,
+          "name": "r2_bucket",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 20,
+          "dflt_value": null,
+          "name": "r2_key",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 21,
+          "dflt_value": null,
+          "name": "r2_url",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 22,
+          "dflt_value": "'text/html'",
+          "name": "content_type",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 23,
+          "dflt_value": "0",
+          "name": "content_size_bytes",
+          "notnull": 0,
+          "pk": 0,
+          "type": "INTEGER"
+        },
+        {
+          "cid": 24,
+          "dflt_value": "'{}'",
+          "name": "config_json",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 25,
+          "dflt_value": "'{}'",
+          "name": "seo_json",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 26,
+          "dflt_value": "'{}'",
+          "name": "analytics_json",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 27,
+          "dflt_value": "'{}'",
+          "name": "metadata_json",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 28,
+          "dflt_value": "0",
+          "name": "is_homepage",
+          "notnull": 0,
+          "pk": 0,
+          "type": "INTEGER"
+        },
+        {
+          "cid": 29,
+          "dflt_value": "0",
+          "name": "is_system_page",
+          "notnull": 0,
+          "pk": 0,
+          "type": "INTEGER"
+        },
+        {
+          "cid": 30,
+          "dflt_value": "0",
+          "name": "requires_auth",
+          "notnull": 0,
+          "pk": 0,
+          "type": "INTEGER"
+        },
+        {
+          "cid": 31,
+          "dflt_value": "1",
+          "name": "is_active",
+          "notnull": 0,
+          "pk": 0,
+          "type": "INTEGER"
+        },
+        {
+          "cid": 32,
+          "dflt_value": "0",
+          "name": "sort_order",
+          "notnull": 0,
+          "pk": 0,
+          "type": "INTEGER"
+        },
+        {
+          "cid": 33,
+          "dflt_value": null,
+          "name": "created_by",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 34,
+          "dflt_value": null,
+          "name": "updated_by",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 35,
+          "dflt_value": null,
+          "name": "published_by",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 36,
+          "dflt_value": null,
+          "name": "created_at",
+          "notnull": 1,
+          "pk": 0,
+          "type": "INTEGER"
+        },
+        {
+          "cid": 37,
+          "dflt_value": null,
+          "name": "updated_at",
+          "notnull": 1,
+          "pk": 0,
+          "type": "INTEGER"
+        },
+        {
+          "cid": 38,
+          "dflt_value": null,
+          "name": "published_at",
+          "notnull": 0,
+          "pk": 0,
+          "type": "INTEGER"
+        },
+        {
+          "cid": 39,
+          "dflt_value": null,
+          "name": "archived_at",
+          "notnull": 0,
+          "pk": 0,
+          "type": "INTEGER"
+        }
+      ],
+      "ddl": "CREATE TABLE cms_pages (\n  id TEXT PRIMARY KEY,\n  project_id TEXT NOT NULL,\n  project_slug TEXT NOT NULL,\n  tenant_id TEXT NOT NULL,\n  workspace_id TEXT,\n  worker_id TEXT,\n  person_uuid TEXT,\n\n  slug TEXT NOT NULL,\n  path TEXT NOT NULL,\n  route_path TEXT NOT NULL,\n  page_type TEXT NOT NULL CHECK (page_type IN (\n    'home','about','services','work','case_study','contact','pricing',\n    'privacy','terms','faq','product','collection','blog','post',\n    'landing','portal','dashboard','auth','sitemap','custom'\n  )),\n\n  title TEXT NOT NULL,\n  meta_description TEXT,\n  description TEXT,\n\n  status TEXT NOT NULL DEFAULT 'draft'\n    CHECK(status IN ('draft','published','archived','scheduled')),\n\n  seo_title TEXT,\n  canonical_url TEXT,\n  robots TEXT DEFAULT 'index,follow',\n  og_image_asset_id TEXT,\n\n  r2_bucket TEXT,\n  r2_key TEXT,\n  r2_url TEXT,\n  content_type TEXT DEFAULT 'text/html',\n  content_size_bytes INTEGER DEFAULT 0,\n\n  config_json TEXT DEFAULT '{}',\n  seo_json TEXT DEFAULT '{}',\n  analytics_json TEXT DEFAULT '{}',\n  metadata_json TEXT DEFAULT '{}',\n\n  is_homepage INTEGER DEFAULT 0,\n  is_system_page INTEGER DEFAULT 0,\n  requires_auth INTEGER DEFAULT 0,\n  is_active INTEGER DEFAULT 1,\n  sort_order INTEGER DEFAULT 0,\n\n  created_by TEXT,\n  updated_by TEXT,\n  published_by TEXT,\n\n  created_at INTEGER NOT NULL,\n  updated_at INTEGER NOT NULL,\n  published_at INTEGER,\n  archived_at INTEGER,\n\n  UNIQUE(project_id, slug),\n  UNIQUE(project_id, route_path)\n)",
+      "elapsed_ms": 3541,
+      "row_count": 17
+    },
+    "cms_section_components": {
+      "columns": [
+        {
+          "cid": 0,
+          "dflt_value": "lower(hex(randomblob(16)))",
+          "name": "id",
+          "notnull": 0,
+          "pk": 1,
+          "type": "TEXT"
+        },
+        {
+          "cid": 1,
+          "dflt_value": null,
+          "name": "section_id",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 2,
+          "dflt_value": null,
+          "name": "component_type",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 3,
+          "dflt_value": "'{}'",
+          "name": "component_data",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 4,
+          "dflt_value": "0",
+          "name": "sort_order",
+          "notnull": 0,
+          "pk": 0,
+          "type": "INTEGER"
+        },
+        {
+          "cid": 5,
+          "dflt_value": "1",
+          "name": "is_visible",
+          "notnull": 0,
+          "pk": 0,
+          "type": "INTEGER"
+        },
+        {
+          "cid": 6,
+          "dflt_value": null,
+          "name": "tenant_id",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 7,
+          "dflt_value": null,
+          "name": "project_id",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 8,
+          "dflt_value": "datetime('now')",
+          "name": "created_at",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 9,
+          "dflt_value": "datetime('now')",
+          "name": "updated_at",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        }
+      ],
+      "ddl": "CREATE TABLE cms_section_components (\n  id TEXT PRIMARY KEY DEFAULT (lower(hex(randomblob(16)))),\n  section_id TEXT NOT NULL,\n  component_type TEXT NOT NULL,\n  component_data TEXT NOT NULL DEFAULT '{}',\n  sort_order INTEGER DEFAULT 0,\n  is_visible INTEGER DEFAULT 1,\n  tenant_id TEXT,\n  project_id TEXT,\n  created_at TEXT DEFAULT (datetime('now')),\n  updated_at TEXT DEFAULT (datetime('now')),\n  FOREIGN KEY (section_id) REFERENCES cms_page_sections(id) ON DELETE CASCADE\n)",
+      "elapsed_ms": 3977,
+      "row_count": 93
+    },
+    "cms_site_pages": {
+      "columns": [
+        {
+          "cid": 0,
+          "dflt_value": "lower(hex(randomblob(8)))",
+          "name": "id",
+          "notnull": 0,
+          "pk": 1,
+          "type": "TEXT"
+        },
+        {
+          "cid": 1,
+          "dflt_value": null,
+          "name": "project_id",
+          "notnull": 1,
+          "pk": 0,
+          "type": "INTEGER"
+        },
+        {
+          "cid": 2,
+          "dflt_value": null,
+          "name": "project_slug",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 3,
+          "dflt_value": null,
+          "name": "path",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 4,
+          "dflt_value": null,
+          "name": "title",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 5,
+          "dflt_value": null,
+          "name": "description",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 6,
+          "dflt_value": "1",
+          "name": "is_active",
+          "notnull": 0,
+          "pk": 0,
+          "type": "INTEGER"
+        },
+        {
+          "cid": 7,
+          "dflt_value": "0",
+          "name": "sort_order",
+          "notnull": 0,
+          "pk": 0,
+          "type": "INTEGER"
+        },
+        {
+          "cid": 8,
+          "dflt_value": "'page'",
+          "name": "page_type",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 9,
+          "dflt_value": "datetime('now')",
+          "name": "created_at",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 10,
+          "dflt_value": "datetime('now')",
+          "name": "updated_at",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 11,
+          "dflt_value": null,
+          "name": "tenant_id",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 12,
+          "dflt_value": null,
+          "name": "workspace_id",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 13,
+          "dflt_value": null,
+          "name": "worker_id",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 14,
+          "dflt_value": null,
+          "name": "person_uuid",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 15,
+          "dflt_value": null,
+          "name": "seo_title",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 16,
+          "dflt_value": null,
+          "name": "canonical_url",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 17,
+          "dflt_value": "'index,follow'",
+          "name": "robots",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 18,
+          "dflt_value": null,
+          "name": "r2_bucket",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 19,
+          "dflt_value": null,
+          "name": "r2_key",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 20,
+          "dflt_value": null,
+          "name": "r2_url",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 21,
+          "dflt_value": "'text/html'",
+          "name": "content_type",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 22,
+          "dflt_value": "'draft'",
+          "name": "status",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 23,
+          "dflt_value": null,
+          "name": "published_at",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 24,
+          "dflt_value": "'{}'",
+          "name": "metadata_json",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        }
+      ],
+      "ddl": "CREATE TABLE cms_site_pages (\n  id TEXT PRIMARY KEY DEFAULT (lower(hex(randomblob(8)))),\n  project_id INTEGER NOT NULL,\n  project_slug TEXT NOT NULL,\n  path TEXT NOT NULL,                    \n  title TEXT NOT NULL,\n  description TEXT,\n  is_active INTEGER DEFAULT 1,\n  sort_order INTEGER DEFAULT 0,\n  page_type TEXT DEFAULT 'page'\n    CHECK (page_type IN ('page','post','product','landing','custom')),\n  created_at TEXT NOT NULL DEFAULT (datetime('now')),\n  updated_at TEXT NOT NULL DEFAULT (datetime('now')), tenant_id TEXT, workspace_id TEXT, worker_id TEXT, person_uuid TEXT, seo_title TEXT, canonical_url TEXT, robots TEXT DEFAULT 'index,follow', r2_bucket TEXT, r2_key TEXT, r2_url TEXT, content_type TEXT DEFAULT 'text/html', status TEXT DEFAULT 'draft', published_at TEXT, metadata_json TEXT DEFAULT '{}',\n  UNIQUE(project_id, path)\n)",
+      "elapsed_ms": 3837,
+      "row_count": 49
+    },
+    "cms_tenants": {
+      "columns": [
+        {
+          "cid": 0,
+          "dflt_value": null,
+          "name": "id",
+          "notnull": 0,
+          "pk": 1,
+          "type": "TEXT"
+        },
+        {
+          "cid": 1,
+          "dflt_value": null,
+          "name": "name",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 2,
+          "dflt_value": null,
+          "name": "slug",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 3,
+          "dflt_value": null,
+          "name": "logo_url",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 4,
+          "dflt_value": "'#1a73e8'",
+          "name": "primary_color",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 5,
+          "dflt_value": "'#174ea6'",
+          "name": "secondary_color",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 6,
+          "dflt_value": "'light'",
+          "name": "theme",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 7,
+          "dflt_value": "CURRENT_TIMESTAMP",
+          "name": "created_at",
+          "notnull": 0,
+          "pk": 0,
+          "type": "DATETIME"
+        },
+        {
+          "cid": 8,
+          "dflt_value": "CURRENT_TIMESTAMP",
+          "name": "updated_at",
+          "notnull": 0,
+          "pk": 0,
+          "type": "DATETIME"
+        },
+        {
+          "cid": 9,
+          "dflt_value": null,
+          "name": "domain",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 10,
+          "dflt_value": null,
+          "name": "settings",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 11,
+          "dflt_value": "1",
+          "name": "is_active",
+          "notnull": 0,
+          "pk": 0,
+          "type": "INTEGER"
+        },
+        {
+          "cid": 12,
+          "dflt_value": null,
+          "name": "tenant_ref_id",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        }
+      ],
+      "ddl": "CREATE TABLE cms_tenants (\n    id TEXT PRIMARY KEY,\n    name TEXT NOT NULL,\n    slug TEXT UNIQUE NOT NULL,\n    logo_url TEXT,\n    primary_color TEXT DEFAULT '#1a73e8',\n    secondary_color TEXT DEFAULT '#174ea6',\n    theme TEXT DEFAULT 'light',\n    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,\n    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP\n, domain TEXT, settings TEXT, is_active INTEGER DEFAULT 1, tenant_ref_id TEXT REFERENCES tenants(id) ON DELETE SET NULL)",
+      "elapsed_ms": 3420,
+      "row_count": 12
+    },
+    "cms_theme_preferences": {
+      "columns": [
+        {
+          "cid": 0,
+          "dflt_value": null,
+          "name": "id",
+          "notnull": 0,
+          "pk": 1,
+          "type": "TEXT"
+        },
+        {
+          "cid": 1,
+          "dflt_value": "'default'",
+          "name": "tenant_id",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 2,
+          "dflt_value": "NULL",
+          "name": "user_id",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 3,
+          "dflt_value": "NULL",
+          "name": "workspace_id",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 4,
+          "dflt_value": "NULL",
+          "name": "project_id",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 5,
+          "dflt_value": "NULL",
+          "name": "page_id",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 6,
+          "dflt_value": null,
+          "name": "theme_id",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 7,
+          "dflt_value": null,
+          "name": "theme_slug",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 8,
+          "dflt_value": "'workspace'",
+          "name": "scope",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 9,
+          "dflt_value": "1",
+          "name": "is_active",
+          "notnull": 1,
+          "pk": 0,
+          "type": "INTEGER"
+        },
+        {
+          "cid": 10,
+          "dflt_value": "datetime('now')",
+          "name": "created_at",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 11,
+          "dflt_value": "datetime('now')",
+          "name": "updated_at",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        }
+      ],
+      "ddl": "CREATE TABLE cms_theme_preferences (\n  id TEXT PRIMARY KEY,\n  tenant_id TEXT NOT NULL DEFAULT 'default',\n  user_id TEXT DEFAULT NULL,\n  workspace_id TEXT DEFAULT NULL,\n  project_id TEXT DEFAULT NULL,\n  page_id TEXT DEFAULT NULL,\n  theme_id TEXT NOT NULL,\n  theme_slug TEXT NOT NULL,\n  scope TEXT NOT NULL DEFAULT 'workspace'\n    CHECK (scope IN ('user_global','tenant','workspace','project','page')),\n  is_active INTEGER NOT NULL DEFAULT 1,\n  created_at TEXT NOT NULL DEFAULT (datetime('now')),\n  updated_at TEXT NOT NULL DEFAULT (datetime('now')),\n  UNIQUE(tenant_id, user_id, workspace_id, project_id, page_id, scope)\n)",
+      "elapsed_ms": 3616,
+      "row_count": 4
+    },
+    "cms_themes": {
+      "columns": [
+        {
+          "cid": 0,
+          "dflt_value": null,
+          "name": "id",
+          "notnull": 0,
+          "pk": 1,
+          "type": "TEXT"
+        },
+        {
+          "cid": 1,
+          "dflt_value": null,
+          "name": "tenant_id",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 2,
+          "dflt_value": null,
+          "name": "name",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 3,
+          "dflt_value": null,
+          "name": "slug",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 4,
+          "dflt_value": null,
+          "name": "css_url",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 5,
+          "dflt_value": null,
+          "name": "config",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 6,
+          "dflt_value": "0",
+          "name": "is_system",
+          "notnull": 0,
+          "pk": 0,
+          "type": "BOOLEAN"
+        },
+        {
+          "cid": 7,
+          "dflt_value": "CURRENT_TIMESTAMP",
+          "name": "created_at",
+          "notnull": 0,
+          "pk": 0,
+          "type": "DATETIME"
+        },
+        {
+          "cid": 8,
+          "dflt_value": null,
+          "name": "wcag_scores",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 9,
+          "dflt_value": null,
+          "name": "contrast_flags",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 10,
+          "dflt_value": "'custom'",
+          "name": "theme_family",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 11,
+          "dflt_value": "100",
+          "name": "sort_order",
+          "notnull": 0,
+          "pk": 0,
+          "type": "INTEGER"
+        },
+        {
+          "cid": 12,
+          "dflt_value": "NULL",
+          "name": "workspace_id",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 13,
+          "dflt_value": "'vs-dark'",
+          "name": "monaco_theme",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 14,
+          "dflt_value": "'#1e293b'",
+          "name": "monaco_bg",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 15,
+          "dflt_value": null,
+          "name": "monaco_theme_data",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 16,
+          "dflt_value": "'{}'",
+          "name": "tokens_json",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 17,
+          "dflt_value": "'{}'",
+          "name": "css_vars_json",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 18,
+          "dflt_value": "'{}'",
+          "name": "brand_json",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 19,
+          "dflt_value": "'{}'",
+          "name": "layout_json",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 20,
+          "dflt_value": "'{}'",
+          "name": "typography_json",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 21,
+          "dflt_value": "'{}'",
+          "name": "components_json",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 22,
+          "dflt_value": "'{}'",
+          "name": "motion_json",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 23,
+          "dflt_value": "NULL",
+          "name": "css_r2_key",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 24,
+          "dflt_value": "NULL",
+          "name": "compiled_css_hash",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 25,
+          "dflt_value": "NULL",
+          "name": "preview_image_url",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 26,
+          "dflt_value": "'active'",
+          "name": "status",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 27,
+          "dflt_value": "NULL",
+          "name": "updated_at",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 28,
+          "dflt_value": "'public'",
+          "name": "visibility",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 29,
+          "dflt_value": "NULL",
+          "name": "alias_of_theme_id",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 30,
+          "dflt_value": "NULL",
+          "name": "css_r2_bucket",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        }
+      ],
+      "ddl": "CREATE TABLE cms_themes (\n    id TEXT PRIMARY KEY,\n    tenant_id TEXT,\n    name TEXT NOT NULL,\n    slug TEXT NOT NULL,\n    css_url TEXT,\n    config TEXT NOT NULL,\n    is_system BOOLEAN DEFAULT 0,\n    created_at DATETIME DEFAULT CURRENT_TIMESTAMP, wcag_scores TEXT, contrast_flags TEXT, theme_family TEXT DEFAULT 'custom', sort_order INTEGER DEFAULT 100, workspace_id TEXT DEFAULT NULL, monaco_theme TEXT NOT NULL DEFAULT 'vs-dark', monaco_bg TEXT NOT NULL DEFAULT '#1e293b', monaco_theme_data TEXT, tokens_json TEXT NOT NULL DEFAULT '{}', css_vars_json TEXT NOT NULL DEFAULT '{}', brand_json TEXT NOT NULL DEFAULT '{}', layout_json TEXT NOT NULL DEFAULT '{}', typography_json TEXT NOT NULL DEFAULT '{}', components_json TEXT NOT NULL DEFAULT '{}', motion_json TEXT NOT NULL DEFAULT '{}', css_r2_key TEXT DEFAULT NULL, compiled_css_hash TEXT DEFAULT NULL, preview_image_url TEXT DEFAULT NULL, status TEXT NOT NULL DEFAULT 'active', updated_at TEXT DEFAULT NULL, visibility TEXT NOT NULL DEFAULT 'public', alias_of_theme_id TEXT DEFAULT NULL, css_r2_bucket TEXT DEFAULT NULL,\n    UNIQUE(tenant_id, slug)\n)",
+      "elapsed_ms": 3453,
+      "row_count": 108
+    },
+    "cms_video_projects": {
+      "columns": [
+        {
+          "cid": 0,
+          "dflt_value": null,
+          "name": "id",
+          "notnull": 0,
+          "pk": 1,
+          "type": "TEXT"
+        },
+        {
+          "cid": 1,
+          "dflt_value": null,
+          "name": "tenant_id",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 2,
+          "dflt_value": null,
+          "name": "name",
+          "notnull": 1,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 3,
+          "dflt_value": null,
+          "name": "description",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 4,
+          "dflt_value": null,
+          "name": "assets",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 5,
+          "dflt_value": null,
+          "name": "timeline_data",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 6,
+          "dflt_value": null,
+          "name": "thumbnail_url",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 7,
+          "dflt_value": "'draft'",
+          "name": "status",
+          "notnull": 0,
+          "pk": 0,
+          "type": "TEXT"
+        },
+        {
+          "cid": 8,
+          "dflt_value": "CURRENT_TIMESTAMP",
+          "name": "created_at",
+          "notnull": 0,
+          "pk": 0,
+          "type": "DATETIME"
+        },
+        {
+          "cid": 9,
+          "dflt_value": "CURRENT_TIMESTAMP",
+          "name": "updated_at",
+          "notnull": 0,
+          "pk": 0,
+          "type": "DATETIME"
+        }
+      ],
+      "ddl": "CREATE TABLE cms_video_projects (\n    id TEXT PRIMARY KEY,\n    tenant_id TEXT NOT NULL,\n    name TEXT NOT NULL,\n    description TEXT,\n    assets TEXT,\n    timeline_data TEXT,\n    thumbnail_url TEXT,\n    status TEXT DEFAULT 'draft',\n    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,\n    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,\n    FOREIGN KEY (tenant_id) REFERENCES cms_tenants(id)\n)",
+      "elapsed_ms": 4064,
+      "row_count": 3
+    }
+  }
+}
