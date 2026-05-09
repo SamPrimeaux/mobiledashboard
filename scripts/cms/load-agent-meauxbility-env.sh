@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -euo pipefail
+# source-safe loader: strict mode disabled for interactive sourcing
 
 ENV_FILE="${AGENTSAM_ENV_FILE:-/Users/samprimeaux/inneranimalmedia/.env.agentsam.local}"
 
@@ -28,3 +28,9 @@ echo "  IAM_WORKSPACE_ID=<set>"
 echo "  IAM_USER_ID=<set>"
 echo "  CLOUDFLARE_R2_BUCKET=$CLOUDFLARE_R2_BUCKET"
 echo "  AGENT_MEAUXBILITY_APP_URL=$AGENT_MEAUXBILITY_APP_URL"
+
+# Source-safety reset: keep interactive terminals alive.
+export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:${HOME}/.nvm/versions/node/v22.22.2/bin:${PATH:-}"
+set +e 2>/dev/null || true
+set +u 2>/dev/null || true
+set +o pipefail 2>/dev/null || true
