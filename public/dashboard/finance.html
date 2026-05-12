@@ -19,87 +19,6 @@
   </noscript>
 </head>
 <body>
-
-<style data-agent-dashboard-global-header>
-  .agent-dashboard-global-header {
-    position: sticky;
-    top: 0;
-    z-index: 2147483647;
-    height: 62px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 22px;
-    border-bottom: 1px solid rgba(255,255,255,.12);
-    background: rgba(8, 10, 16, .82);
-    backdrop-filter: blur(18px) saturate(150%);
-    -webkit-backdrop-filter: blur(18px) saturate(150%);
-    color: #f8fafc;
-    font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  }
-  .agent-dashboard-global-header * { box-sizing: border-box; }
-  .agent-dashboard-global-brand {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    color: #fff;
-    text-decoration: none;
-    font-weight: 760;
-    letter-spacing: -.03em;
-  }
-  .agent-dashboard-global-brand-mark {
-    width: 30px;
-    height: 30px;
-    border-radius: 11px;
-    background:
-      radial-gradient(circle at 30% 20%, rgba(255,255,255,.9), rgba(255,255,255,0) 24%),
-      linear-gradient(135deg, #8b5cf6, #22d3ee);
-    box-shadow: 0 0 34px rgba(139,92,246,.36);
-  }
-  .agent-dashboard-global-nav {
-    display: flex;
-    align-items: center;
-    gap: 7px;
-    overflow-x: auto;
-  }
-  .agent-dashboard-global-nav a {
-    color: rgba(226,232,240,.76);
-    text-decoration: none;
-    font-size: 13px;
-    line-height: 1;
-    padding: 10px 12px;
-    border-radius: 999px;
-    border: 1px solid transparent;
-    white-space: nowrap;
-  }
-  .agent-dashboard-global-nav a:hover {
-    color: #fff;
-    border-color: rgba(255,255,255,.12);
-    background: rgba(255,255,255,.06);
-  }
-  .agent-dashboard-global-nav a[data-active="true"] {
-    color: #fff;
-    background: linear-gradient(135deg, rgba(124,58,237,.95), rgba(34,211,238,.26));
-    border-color: rgba(255,255,255,.16);
-    box-shadow: 0 0 30px rgba(124,58,237,.22);
-  }
-</style>
-<header class="agent-dashboard-global-header" data-agent-dashboard-global-header>
-  <a class="agent-dashboard-global-brand" href="/" aria-label="Agent Meauxbility home">
-    <span class="agent-dashboard-global-brand-mark"></span>
-    <span>Agent Meauxbility</span>
-  </a>
-  <nav class="agent-dashboard-global-nav" aria-label="Dashboard navigation">
-    <a href="/">Agents</a>
-    <a href="/dashboard/automations">Automations</a>
-    <a href="/dashboard/overview" data-agent-analytics-nav="overview">Overview</a>
-    <a href="/dashboard/finance" data-agent-analytics-nav="finance">Finance</a>
-    <a href="/dashboard/health" data-agent-analytics-nav="health">Health</a>
-    <a href="/dashboard/cms">CMS</a>
-  </nav>
-</header>
-
-
   <div id="__bundler_thumbnail">
     <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
       <rect width="1200" height="800" fill="#1a1820"></rect>
@@ -270,69 +189,88 @@ document.addEventListener('DOMContentLoaded', async function() {
   </script>
 
 
-<script data-agent-analytics-mpa-controller>
-(function AgentAnalyticsMpaController() {
-  var path = window.location.pathname || "";
-  var page =
-    path.indexOf("/dashboard/finance") === 0 ? "finance" :
-    path.indexOf("/dashboard/health") === 0 ? "health" :
-    "overview";
+<script data-agent-analytics-mpa-preserve-ui>
+(function AgentAnalyticsMpaPreserveUI() {
+  var wanted = "finance";
 
-  document.documentElement.setAttribute("data-agent-analytics-page", page);
-
-  function text(el) {
-    return (el && (el.textContent || el.innerText) || "").trim().toLowerCase();
+  function cleanText(el) {
+    return String((el && (el.textContent || el.innerText)) || "").trim().toLowerCase();
   }
 
-  function clickMatchingTab() {
-    var candidates = Array.prototype.slice.call(document.querySelectorAll("button, [role='tab'], a"));
-    var target = candidates.find(function(el) { return text(el) === page; });
-    if (target) {
-      target.click();
-      candidates.forEach(function(el) {
-        var t = text(el);
-        if (t === "overview" || t === "finance" || t === "health") {
-          el.classList.toggle("active", t === page);
-          el.classList.toggle("active-nav", t === page);
-          el.setAttribute("aria-selected", t === page ? "true" : "false");
-        }
-      });
+  function activateTab() {
+    var candidates = Array.prototype.slice.call(
+      document.querySelectorAll("button, [role='tab'], a, .tab, [class*='tab']")
+    );
+
+    var tabs = candidates.filter(function(el) {
+      var t = cleanText(el);
+      return t === "overview" || t === "finance" || t === "health";
+    });
+
+    var target = tabs.find(function(el) {
+      return cleanText(el) === wanted;
+    });
+
+    if (target && !target.__agentClickedOnce) {
+      target.__agentClickedOnce = true;
+      try { target.click(); } catch (_) {}
     }
 
-    Array.prototype.slice.call(document.querySelectorAll("[data-agent-analytics-nav]")).forEach(function(a) {
-      a.setAttribute("data-active", a.getAttribute("data-agent-analytics-nav") === page ? "true" : "false");
+    tabs.forEach(function(el) {
+      var t = cleanText(el);
+      var active = t === wanted;
+
+      el.classList.toggle("active", active);
+      el.classList.toggle("active-nav", active);
+      el.classList.toggle("selected", active);
+      el.setAttribute("aria-selected", active ? "true" : "false");
+
+      if (active) {
+        el.setAttribute("data-active", "true");
+      } else {
+        el.removeAttribute("data-active");
+      }
+    });
+
+    document.documentElement.setAttribute("data-agent-analytics-route", wanted);
+    if (document.body) document.body.setAttribute("data-agent-analytics-route", wanted);
+  }
+
+  function wireMpaLinks() {
+    var candidates = Array.prototype.slice.call(
+      document.querySelectorAll("button, [role='tab'], a, .tab, [class*='tab']")
+    );
+
+    candidates.forEach(function(el) {
+      var t = cleanText(el);
+      if (t !== "overview" && t !== "finance" && t !== "health") return;
+
+      el.style.cursor = "pointer";
+
+      el.addEventListener("click", function(evt) {
+        var next = "/dashboard/" + t;
+
+        // Let same-page initial activation happen without forcing reload loops.
+        if (window.location.pathname !== next) {
+          evt.preventDefault();
+          window.location.href = next;
+        }
+      }, true);
     });
   }
 
-  function convertTabsToLinks() {
-    Array.prototype.slice.call(document.querySelectorAll("button, [role='tab']")).forEach(function(el) {
-      var t = text(el);
-      if (t === "overview" || t === "finance" || t === "health") {
-        el.addEventListener("click", function(evt) {
-          var desired = text(el);
-          var nextPath = "/dashboard/" + desired;
-          if (window.location.pathname !== nextPath) {
-            evt.preventDefault();
-            history.replaceState(null, "", nextPath);
-          }
-          setTimeout(clickMatchingTab, 0);
-        }, true);
-      }
-    });
+  function boot() {
+    wireMpaLinks();
+    activateTab();
+    setTimeout(activateTab, 80);
+    setTimeout(activateTab, 250);
+    setTimeout(activateTab, 700);
   }
 
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", function() {
-      convertTabsToLinks();
-      setTimeout(clickMatchingTab, 0);
-      setTimeout(clickMatchingTab, 150);
-      setTimeout(clickMatchingTab, 500);
-    });
+    document.addEventListener("DOMContentLoaded", boot);
   } else {
-    convertTabsToLinks();
-    setTimeout(clickMatchingTab, 0);
-    setTimeout(clickMatchingTab, 150);
-    setTimeout(clickMatchingTab, 500);
+    boot();
   }
 })();
 </script>
