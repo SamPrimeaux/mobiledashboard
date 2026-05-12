@@ -124,7 +124,8 @@
             <div class="flex items-center justify-center gap-4 overflow-x-auto no-scrollbar whitespace-nowrap justify-self-center">
                 <button id="nav-agents" onclick="switchMainTab('agents')" class="text-textMain font-medium transition-colors">Agents</button>
                 <button id="nav-automations" onclick="switchMainTab('automations')" class="text-textMuted hover:text-textMain transition-colors">Automations</button>
-                <button id="nav-dashboard" onclick="switchMainTab('dashboard')" class="text-textMuted hover:text-textMain transition-colors">Dashboard</button>
+                <button id="nav-finance" onclick="location.href='/dashboard/finance'" class="nav-btn">Finance</button>
+      <button id="nav-dashboard" onclick="switchMainTab('dashboard')" class="text-textMuted hover:text-textMain transition-colors">Dashboard</button>
             </div>
             <div class="flex items-center justify-end">
                 <div class="w-7 h-7 rounded-full bg-surfaceHover flex items-center justify-center text-xs border border-border">
@@ -917,9 +918,9 @@ FROM context_index</div>
 
   var ROUTES = {
     "/": { key: "agents", label: "Agents", title: "Agent Meauxbility — Agents" },
-    "/automations": { key: "automations", label: "Automations", title: "Agent Meauxbility — Automations" },
+    "/dashboard/automations": { key: "automations", label: "Automations", title: "Agent Meauxbility — Automations" },
     "/dashboard": { key: "dashboard", label: "Dashboard", title: "Agent Meauxbility — Dashboard" },
-    "/cms": { key: "cms", label: "CMS", title: "Agent Meauxbility — CMS" }
+    "/dashboard/cms": { key: "cms", label: "CMS", title: "Agent Meauxbility — CMS" }
   };
 
   function normalizePath(pathname) {
